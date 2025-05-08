@@ -198,7 +198,7 @@ void DiamondShapeState::Update(float deltaTime)
 {
 	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
 	{
-		MainApp().ChangeState("SquareShapeState");
+		MainApp().ChangeState("LightningShapeState");
 	}
 }
 
@@ -220,4 +220,23 @@ void DiamondShapeState::CreateShape()
 	mVertices.push_back({ { -0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
 	mVertices.push_back({ { 0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
 
+}
+
+void LightningShapeState::Update(float deltaTime)
+{
+	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
+	{
+		MainApp().ChangeState("SquareShapeState");
+	}
+}
+
+void LightningShapeState::CreateShape()
+{
+	mVertices.push_back({ { -0.15f, 0.0f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.0f, 0.5f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.0f, 0.0f, 0.0f }, Colors::Goldenrod });
+
+	mVertices.push_back({ { 0.0f, 0.15f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.15f, 0.15f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.0f, -0.35f, 0.0f }, Colors::Goldenrod });
 }
