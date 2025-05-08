@@ -132,7 +132,7 @@ void ShapeState::Render()
 // Triangle Shape
 void TriangleShapeState::Update(float deltaTime)
 {
-	if (InputSystem::Get()->IsKeyPressed(KeyCode::UP))
+	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
 	{
 		MainApp().ChangeState("TriforceShapeState");
 	}
@@ -148,9 +148,9 @@ void TriangleShapeState::CreateShape()
 // Square Shape
 void SquareShapeState::Update(float deltaTime)
 {
-	if (InputSystem::Get()->IsKeyPressed(KeyCode::W))
+	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
 	{
-		MainApp().ChangeState("TriangleShapeState");
+		MainApp().ChangeState("TriforceShapeState");
 	}
 }
 
@@ -170,41 +170,54 @@ void TriforceShapeState::Update(float deltaTime)
 {
 	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
 	{
-		MainApp().ChangeState("TriangleShapeState");
+		MainApp().ChangeState("DiamondShapeState");
 	}
 }
 
 void TriforceShapeState::CreateShape()
 {
 	// Triangle 1
-	mVertices.push_back({ { -0.75f, 0.0f, 0.0f }, Colors::Gold });
-	mVertices.push_back({ { -0.5f, 0.5f, 0.0f }, Colors::Gold });
-	mVertices.push_back({ { -0.25f, 0.0f, 0.0f }, Colors::LightGoldenrodYellow });
+	mVertices.push_back({ { -0.75f, 0.0f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { -0.5f, 0.5f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { -0.25f, 0.0f, 0.0f }, Colors::HotPink });
 
 	// Triangle 2
-	mVertices.push_back({ { -0.25f, 0.0f, 0.0f }, Colors::Gold });
-	mVertices.push_back({ { 0.0f, 0.5f, 0.0f }, Colors::Gold });
-	mVertices.push_back({ { 0.25f, 0.0f, 0.0f }, Colors::LightGoldenrodYellow });
+	mVertices.push_back({ { -0.25f, 0.0f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { 0.0f, 0.5f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { 0.25f, 0.0f, 0.0f }, Colors::HotPink });
 
 	// Triangle 3
-	mVertices.push_back({ { -0.5f, 0.5f, 0.0f }, Colors::LightGoldenrodYellow });
-	mVertices.push_back({ { -0.25f, 1.0f, 0.0f }, Colors::Gold });
-	mVertices.push_back({ { 0.0f, 0.5f, 0.0f }, Colors::Yellow });
+	mVertices.push_back({ { -0.5f, 0.5f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { -0.25f, 1.0f, 0.0f }, Colors::HotPink });
+	mVertices.push_back({ { 0.0f, 0.5f, 0.0f }, Colors::HotPink });
 }
 
 
 
 void DiamondShapeState::Update(float deltaTime)
 {
-	if (InputSystem::Get()->IsKeyPressed(KeyCode::UP))
+	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
 	{
-		MainApp().ChangeState("TriforceShapeState");
+		MainApp().ChangeState("SquareShapeState");
 	}
 }
 
 void DiamondShapeState::CreateShape()
 {
+	mVertices.push_back({ { -0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { -0.25f, 0.75f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.0f, 0.25f, 0.0f }, Colors::Goldenrod });
 
+	mVertices.push_back({ { 0.0f, 0.25f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { -0.25f, 0.75f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.25f, 0.75f, 0.0f }, Colors::Goldenrod });
 
+	mVertices.push_back({ { 0.0f, 0.25f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.25f, 0.75f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
+
+	mVertices.push_back({ { 0.0f, -0.75f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { -0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
+	mVertices.push_back({ { 0.5f, 0.25f, 0.0f }, Colors::Goldenrod });
 
 }
