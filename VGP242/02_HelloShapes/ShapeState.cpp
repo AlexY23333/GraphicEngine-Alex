@@ -225,7 +225,7 @@ void DiamondShapeState::CreateShape()
 void LightningShapeState::Update(float deltaTime)
 {
 	if (InputSystem::Get()->IsKeyPressed(KeyCode::DOWN))
-	{
+	{	
 		MainApp().ChangeState("SquareShapeState");
 	}
 }
