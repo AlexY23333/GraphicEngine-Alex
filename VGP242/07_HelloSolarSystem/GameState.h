@@ -30,6 +30,7 @@ struct TexturedObject
 	float orbitSpeed;
 	float rotationSpeed;
 	float distanceFromSun;
+	float distanceFromEarth = 0;
 	float renderTargetDistance;
 
 	void UpdatePosition(){}

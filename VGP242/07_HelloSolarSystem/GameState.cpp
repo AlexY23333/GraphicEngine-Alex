@@ -50,16 +50,16 @@ void GameState::Initialize()
 
 	// Create Meshes
 	mObjects[(int)SolarSystem::Sun].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 100.0f));
-	mObjects[(int)SolarSystem::Mercury].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 0.38f));
-	mObjects[(int)SolarSystem::Venus].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 0.95f));
-	mObjects[(int)SolarSystem::Earth].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 1.0f));
-	mObjects[(int)SolarSystem::Mars].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 0.53f));
+	mObjects[(int)SolarSystem::Mercury].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 3.8f));//size * 10
+	mObjects[(int)SolarSystem::Venus].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 4.75f));//size * 5
+	mObjects[(int)SolarSystem::Earth].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 5.0f));//size * 5
+	mObjects[(int)SolarSystem::Mars].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 5.3f));//size * 10
 	mObjects[(int)SolarSystem::Jupiter].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 10.97f));
 	mObjects[(int)SolarSystem::Saturn].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 9.14f));
 	mObjects[(int)SolarSystem::Uranus].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 3.98f));
 	mObjects[(int)SolarSystem::Neptune].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 3.86f));
-	mObjects[(int)SolarSystem::Pluto].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 0.18f));
-	mObjects[(int)SolarSystem::Moon].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 0.27f));
+	mObjects[(int)SolarSystem::Pluto].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 3.6f));//size * 20
+	mObjects[(int)SolarSystem::Moon].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSpherePX(100, 100, 2.7f));// size * 10
 	mObjects[(int)SolarSystem::Galaxy].mMeshBuffer.Initialize<MeshPX>(MeshBuilder::CreateSkySpherePX(100, 100, 1000.0f));
 
 
@@ -93,7 +93,10 @@ void GameState::Initialize()
 	mObjects[(int)SolarSystem::Neptune].distanceFromSun = 850;
 	mObjects[(int)SolarSystem::Pluto].distanceFromSun = 950;
 	mObjects[(int)SolarSystem::Galaxy].distanceFromSun = 0;
+	
+	//set moon position to earth
 	mObjects[(int)SolarSystem::Moon].distanceFromSun = 0;
+	mObjects[(int)SolarSystem::Moon].distanceFromEarth = 15.0f;
 
 
 	// Set Revolutions
@@ -126,17 +129,17 @@ void GameState::Initialize()
 
 	// Set Render Target Distances
 	mObjects[(int)SolarSystem::Sun].renderTargetDistance = -300.0f;
-	mObjects[(int)SolarSystem::Mercury].renderTargetDistance = -1.0f;
-	mObjects[(int)SolarSystem::Venus].renderTargetDistance = -3.0f;
-	mObjects[(int)SolarSystem::Earth].renderTargetDistance = -5.0f;
-	mObjects[(int)SolarSystem::Mars].renderTargetDistance = -4.0f;
-	mObjects[(int)SolarSystem::Jupiter].renderTargetDistance = -40.0f;
-	mObjects[(int)SolarSystem::Saturn].renderTargetDistance = -40.0f;
+	mObjects[(int)SolarSystem::Mercury].renderTargetDistance = -15.0f;
+	mObjects[(int)SolarSystem::Venus].renderTargetDistance = -20.0f;
+	mObjects[(int)SolarSystem::Earth].renderTargetDistance = -25.0f;
+	mObjects[(int)SolarSystem::Mars].renderTargetDistance = -25.0f;
+	mObjects[(int)SolarSystem::Jupiter].renderTargetDistance = -50.0f;
+	mObjects[(int)SolarSystem::Saturn].renderTargetDistance = -45.0f;
 	mObjects[(int)SolarSystem::Uranus].renderTargetDistance = -20.0f;
-	mObjects[(int)SolarSystem::Neptune].renderTargetDistance = -23.1f;
-	mObjects[(int)SolarSystem::Pluto].renderTargetDistance = -0.7f;
+	mObjects[(int)SolarSystem::Neptune].renderTargetDistance = -20.0f;
+	mObjects[(int)SolarSystem::Pluto].renderTargetDistance = -18.0f;
 	mObjects[(int)SolarSystem::Galaxy].renderTargetDistance = -1200.0f;
-	mObjects[(int)SolarSystem::Moon].renderTargetDistance = -2.0f;
+	mObjects[(int)SolarSystem::Moon].renderTargetDistance = -12.0f;
 
 
 }
@@ -211,60 +214,123 @@ bool ringsToggle = true;
 
 void GameState::Render()
 {
-	// Render Orbit Rings
+	// 渲染轨道环
 	if (ringsToggle)
 	{
+		// 渲染行星绕太阳的轨道环
 		for (int i = 1; i < (int)SolarSystem::Galaxy; i++)
 		{
 			SimpleDraw::AddGroundCircle(100, mObjects[i].distanceFromSun, { 0,0,0 }, Colors::Gray);
 		}
-		// Saturn Ring
+
+		// 土星环特殊处理
 		{
-			Matrix4 ringWorldPosition = Matrix4::RotationY(mObjects[(int)SolarSystem::Saturn].rotationSpeed * totalTime) * Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Saturn].distanceFromSun) * Matrix4::RotationY(mObjects[(int)SolarSystem::Saturn].orbitSpeed * totalTime / 10.0f);
-			Vector3 ringPosition = { ringWorldPosition._41,ringWorldPosition._42,ringWorldPosition._43 };
+			Matrix4 ringWorldPosition = Matrix4::RotationY(mObjects[(int)SolarSystem::Saturn].rotationSpeed * totalTime) *
+				Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Saturn].distanceFromSun) *
+				Matrix4::RotationY(mObjects[(int)SolarSystem::Saturn].orbitSpeed * totalTime / 10.0f);
+			Vector3 ringPosition = { ringWorldPosition._41, ringWorldPosition._42, ringWorldPosition._43 };
 			SimpleDraw::AddGroundCircle(100, 25, ringPosition, Colors::White);
 		}
+
+		// 计算地球位置
+		Matrix4 earthMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].rotationSpeed * totalTime) *
+			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Earth].distanceFromSun) *
+			Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].orbitSpeed * totalTime / 10.0f);
+		Vector3 earthPosition = { earthMatWorld._41, earthMatWorld._42, earthMatWorld._43 };
+
+		// 渲染月球绕地球的轨道环
+		SimpleDraw::AddGroundCircle(100, mObjects[(int)SolarSystem::Moon].distanceFromEarth,
+			earthPosition, Colors::LightGray);
 
 		SimpleDraw::Render(mCamera);
 	}
 
-	// Render objects
-	for (TexturedObject& object : mObjects)
+	// 渲染太阳系天体
+	for (int i = 0; i < (int)SolarSystem::End; i++)
 	{
+		// 跳过月球，单独处理
+		if (i == (int)SolarSystem::Moon) continue;
+
 		mVertexShader.Bind();
 		mPixelShader.Bind();
-		object.mDiffuseTexture.BindPS(0);
+		mObjects[i].mDiffuseTexture.BindPS(0);
 		mSampler.BindPS(0);
 
-		// constant buffer
-		Matrix4 matWorld = Matrix4::RotationY(object.rotationSpeed * totalTime) * Matrix4::Translation(Vector3::ZAxis * object.distanceFromSun) * Matrix4::RotationY(object.orbitSpeed * totalTime / 10.0f);
+		Matrix4 matWorld = Matrix4::RotationY(mObjects[i].rotationSpeed * totalTime) *
+			Matrix4::Translation(Vector3::ZAxis * mObjects[i].distanceFromSun) *
+			Matrix4::RotationY(mObjects[i].orbitSpeed * totalTime / 10.0f);
+
 		Matrix4 matView = mCamera.GetViewMatrix();
 		Matrix4 matProj = mCamera.GetProjectionMatrix();
 		Matrix4 matFinal = matWorld * matView * matProj;
 		Matrix4 wvp = Transpose(matFinal);
+
 		mConstantBuffer.Update(&wvp);
 		mConstantBuffer.BindVS(0);
-		object.mMeshBuffer.Render();
+		mObjects[i].mMeshBuffer.Render();
 	}
 
-	mVertexShader.Bind();
-	mPixelShader.Bind();
-	mObjects[currentRenderTarget].mDiffuseTexture.BindPS(0);
-	mSampler.BindPS(0);
+	// 单独渲染月球
+	{
+		mVertexShader.Bind();
+		mPixelShader.Bind();
+		mObjects[(int)SolarSystem::Moon].mDiffuseTexture.BindPS(0);
+		mSampler.BindPS(0);
 
-	Matrix4 matWorld = Matrix4::RotationY(mObjects[currentRenderTarget].rotationSpeed * totalTime);
-	Matrix4 matView = mRenderTargetCamera.GetViewMatrix();
-	Matrix4 matProj = mRenderTargetCamera.GetProjectionMatrix();
-	Matrix4 matFinal = matWorld * matView * matProj;
-	Matrix4 wvp = Transpose(matFinal);
-	mConstantBuffer.Update(&wvp);
-	mConstantBuffer.BindVS(0);
+		// 先计算地球的世界矩阵
+		Matrix4 earthMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].rotationSpeed * totalTime) *
+			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Earth].distanceFromSun) *
+			Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].orbitSpeed * totalTime / 10.0f);
 
-	mRenderTargetCamera.SetPosition({ 0.0f, 0.0f, mObjects[currentRenderTarget].renderTargetDistance });
+		// 月球的世界矩阵基于地球位置
+		Matrix4 moonMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].rotationSpeed * totalTime) *
+			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Moon].distanceFromEarth) *
+			Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].orbitSpeed * totalTime) *
+			earthMatWorld;
 
-	mRenderTarget.BeginRender();
-	mObjects[currentRenderTarget].mMeshBuffer.Render();
-	mRenderTarget.EndRender();
+		Matrix4 matView = mCamera.GetViewMatrix();
+		Matrix4 matProj = mCamera.GetProjectionMatrix();
+		Matrix4 matFinal = moonMatWorld * matView * matProj;
+		Matrix4 wvp = Transpose(matFinal);
+
+		mConstantBuffer.Update(&wvp);
+		mConstantBuffer.BindVS(0);
+		mObjects[(int)SolarSystem::Moon].mMeshBuffer.Render();
+	}
+
+	// 渲染目标特写视图
+	{
+		mVertexShader.Bind();
+		mPixelShader.Bind();
+		mObjects[currentRenderTarget].mDiffuseTexture.BindPS(0);
+		mSampler.BindPS(0);
+
+		Matrix4 matWorld;
+
+		// 特殊处理月球的渲染目标
+		if (currentRenderTarget == (int)SolarSystem::Moon)
+		{
+			matWorld = Matrix4::RotationY(mObjects[currentRenderTarget].rotationSpeed * totalTime);
+			mRenderTargetCamera.SetPosition({ 0.0f, 0.0f, mObjects[currentRenderTarget].renderTargetDistance });
+		}
+		else
+		{
+			matWorld = Matrix4::RotationY(mObjects[currentRenderTarget].rotationSpeed * totalTime);
+			mRenderTargetCamera.SetPosition({ 0.0f, 0.0f, mObjects[currentRenderTarget].renderTargetDistance });
+		}
+
+		Matrix4 matView = mRenderTargetCamera.GetViewMatrix();
+		Matrix4 matProj = mRenderTargetCamera.GetProjectionMatrix();
+		Matrix4 matFinal = matWorld * matView * matProj;
+		Matrix4 wvp = Transpose(matFinal);
+
+		mConstantBuffer.Update(&wvp);
+		mConstantBuffer.BindVS(0);
+
+		mRenderTarget.BeginRender();
+		mObjects[currentRenderTarget].mMeshBuffer.Render();
+		mRenderTarget.EndRender();
+	}
 }
 
 bool buttonValue = false;
