@@ -167,7 +167,7 @@ void GameState::Terminate()
 void GameState::UpdateCamera(float deltaTime)
 {
 	auto input = InputSystem::Get();
-	const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? 100.0f : 1.0f) * deltaTime;
+	const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? 500.0f : 100.0f) * deltaTime;
 	const float turnSpeed = 0.1f * deltaTime;
 	if (input->IsKeyDown(KeyCode::W))
 	{
@@ -214,16 +214,16 @@ bool ringsToggle = true;
 
 void GameState::Render()
 {
-	// 渲染轨道环
+
 	if (ringsToggle)
 	{
-		// 渲染行星绕太阳的轨道环
+
 		for (int i = 1; i < (int)SolarSystem::Galaxy; i++)
 		{
 			SimpleDraw::AddGroundCircle(100, mObjects[i].distanceFromSun, { 0,0,0 }, Colors::Gray);
 		}
 
-		// 土星环特殊处理
+
 		{
 			Matrix4 ringWorldPosition = Matrix4::RotationY(mObjects[(int)SolarSystem::Saturn].rotationSpeed * totalTime) *
 				Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Saturn].distanceFromSun) *
@@ -232,23 +232,21 @@ void GameState::Render()
 			SimpleDraw::AddGroundCircle(100, 25, ringPosition, Colors::White);
 		}
 
-		// 计算地球位置
 		Matrix4 earthMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].rotationSpeed * totalTime) *
 			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Earth].distanceFromSun) *
 			Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].orbitSpeed * totalTime / 10.0f);
 		Vector3 earthPosition = { earthMatWorld._41, earthMatWorld._42, earthMatWorld._43 };
 
-		// 渲染月球绕地球的轨道环
+
 		SimpleDraw::AddGroundCircle(100, mObjects[(int)SolarSystem::Moon].distanceFromEarth,
 			earthPosition, Colors::LightGray);
 
 		SimpleDraw::Render(mCamera);
 	}
 
-	// 渲染太阳系天体
+	// render planets except moon
 	for (int i = 0; i < (int)SolarSystem::End; i++)
 	{
-		// 跳过月球，单独处理
 		if (i == (int)SolarSystem::Moon) continue;
 
 		mVertexShader.Bind();
@@ -270,23 +268,21 @@ void GameState::Render()
 		mObjects[i].mMeshBuffer.Render();
 	}
 
-	// 单独渲染月球
+	// rendermoon
 	{
 		mVertexShader.Bind();
 		mPixelShader.Bind();
 		mObjects[(int)SolarSystem::Moon].mDiffuseTexture.BindPS(0);
 		mSampler.BindPS(0);
 
-		// 先计算地球的世界矩阵
+		
 		Matrix4 earthMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].rotationSpeed * totalTime) *
-			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Earth].distanceFromSun) *
-			Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].orbitSpeed * totalTime / 10.0f);
+								Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Earth].distanceFromSun) *
+								Matrix4::RotationY(mObjects[(int)SolarSystem::Earth].orbitSpeed * totalTime / 10.0f);
 
-		// 月球的世界矩阵基于地球位置
-		Matrix4 moonMatWorld = Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].rotationSpeed * totalTime) *
-			Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Moon].distanceFromEarth) *
-			Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].orbitSpeed * totalTime) *
-			earthMatWorld;
+		Matrix4 moonMatWorld =	Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].rotationSpeed * totalTime) *
+								Matrix4::Translation(Vector3::ZAxis * mObjects[(int)SolarSystem::Moon].distanceFromEarth) *
+								Matrix4::RotationY(mObjects[(int)SolarSystem::Moon].orbitSpeed * totalTime) * earthMatWorld;
 
 		Matrix4 matView = mCamera.GetViewMatrix();
 		Matrix4 matProj = mCamera.GetProjectionMatrix();
@@ -297,8 +293,7 @@ void GameState::Render()
 		mConstantBuffer.BindVS(0);
 		mObjects[(int)SolarSystem::Moon].mMeshBuffer.Render();
 	}
-
-	// 渲染目标特写视图
+	//render on debug window
 	{
 		mVertexShader.Bind();
 		mPixelShader.Bind();
@@ -307,7 +302,6 @@ void GameState::Render()
 
 		Matrix4 matWorld;
 
-		// 特殊处理月球的渲染目标
 		if (currentRenderTarget == (int)SolarSystem::Moon)
 		{
 			matWorld = Matrix4::RotationY(mObjects[currentRenderTarget].rotationSpeed * totalTime);
