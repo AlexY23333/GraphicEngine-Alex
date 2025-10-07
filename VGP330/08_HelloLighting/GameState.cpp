@@ -12,11 +12,19 @@ void GameState::Initialize()
 	// Set Cameras
 	mCamera.SetPosition({ 0.0f, 150.0f, -600.0f });
 	mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
+
+	Mesh mesh = MeshBuilder::CreateSphere(30, 30, 1.0f);
+	mRenderObject.meshBuffer.Initialize(mesh);
+
+	std::filesystem::path shaderFile = 
+	mStandardEffect.Initialize(shaderFile);
+	mStandardEffect.SetCamera(mCamera);
 }
 
 void GameState::Terminate()
 {
-	
+	mRenderObject.Terminate();
+	mStandardEffect.Terminate();
 }
 
 void GameState::UpdateCamera(float deltaTime)
@@ -70,6 +78,11 @@ bool ringsToggle = true;
 void GameState::Render()
 {
 	SimpleDraw::Render(mCamera);
+
+	mStandardEffect.Begin();
+	mStandardEffect.Render(mRenderObject);
+	mStandardEffect.End();
+
 	
 
 }

@@ -15,4 +15,7 @@ protected:
 	void UpdateCamera(float deltaTime);
 
 	SumEngine::Graphics::Camera mCamera;
+	SumEngine::Graphics::RenderObject mRenderObject;
+	SumEngine::Graphics::StandardEffect mStandardEffect;
+
 };
