@@ -1,5 +1,5 @@
 #include "GameState.h"
-using namespace std;
+
 using namespace SumEngine;
 using namespace SumEngine::Math;
 using namespace SumEngine::Graphics;
@@ -9,28 +9,51 @@ using namespace SumEngine::Input;
 
 void GameState::Initialize()
 {
-	// Set Cameras
-	mCamera.SetPosition({ 0.0f, 150.0f, -600.0f });
+
+	mCamera.SetPosition({ 0.0f, 1.0f, -5.0f });
 	mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
 
-	Mesh mesh = MeshBuilder::CreateSphere(30, 30, 1.0f);
-	mRenderObject.meshBuffer.Initialize(mesh);
+	mDirectionalLight.direction = Normalize({ 1.0f, -1.0f, 1.0f });
+	mDirectionalLight.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
+	mDirectionalLight.diffuse = { 0.7f, 0.7f, 0.7f, 1.0f };
+	mDirectionalLight.specular = { 0.9f, 0.9f, 0.9f, 1.0f };
 
-	std::filesystem::path shaderFile = 
+	TextureCache* tc = TextureCache::Get();
+
+	Mesh mesh = MeshBuilder::CreateSphere(60, 60, 1.0f);
+	mRenderObject.meshBuffer.Initialize<Mesh>(mesh);
+	mRenderObject.diffuseId = tc->LoadTexture("planets/earth/earth.jpg");
+	mRenderObject.normalId = tc->LoadTexture("planets/earth/earth_normal.jpg");
+	mRenderObject.specularId = tc->LoadTexture("planets/earth/earth_spec.jpg");
+	mRenderObject.bumpId = tc->LoadTexture("planets/earth/earth_bump.jpg");
+
+
+	//mRenderObject2.transform.position = { 2.0f, 0.0f, 0.0f };
+	//mRenderObject2.meshBuffer.Initialize<Mesh>(mesh);
+	//mRenderObject2.diffuseId = tc->LoadTexture("skysphere/sky.jpg");
+
+	std::filesystem::path shaderFile = L"../../Assets/Shaders/Standard.fx";
 	mStandardEffect.Initialize(shaderFile);
 	mStandardEffect.SetCamera(mCamera);
+	mStandardEffect.SetDirectionalLight(mDirectionalLight);
 }
 
 void GameState::Terminate()
 {
-	mRenderObject.Terminate();
 	mStandardEffect.Terminate();
+	mRenderObject.Terminate();
+	//mRenderObject2.Terminate();
+}
+
+void GameState::Update(float deltaTime)
+{
+	UpdateCamera(deltaTime);
 }
 
 void GameState::UpdateCamera(float deltaTime)
 {
 	auto input = InputSystem::Get();
-	const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? 500.0f : 100.0f) * deltaTime;
+	const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? 10.0f : 1.0f) * deltaTime;
 	const float turnSpeed = 0.1f * deltaTime;
 	if (input->IsKeyDown(KeyCode::W))
 	{
@@ -63,35 +86,41 @@ void GameState::UpdateCamera(float deltaTime)
 	}
 }
 
-float totalTime = 0.0f;
-
-void GameState::Update(float deltaTime)
-{
-	totalTime += deltaTime / 10.0f; 
-	UpdateCamera(deltaTime);
-}
-
-int currentRenderTarget = 0;
-float renderTargetDistance = -300.0f;
-bool ringsToggle = true;
-
 void GameState::Render()
 {
-	SimpleDraw::Render(mCamera);
 
 	mStandardEffect.Begin();
 	mStandardEffect.Render(mRenderObject);
+	//mStandardEffect.Render(mRenderObject2);
 	mStandardEffect.End();
-
-	
+	SimpleDraw::AddGroundPlane(10.0f, Colors::LightGray);
+	SimpleDraw::Render(mCamera);
 
 }
 
-bool buttonValue = false;
-
 void GameState::DebugUI()
 {
-	ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		if (ImGui::DragFloat3("Direction##Light", &mDirectionalLight.direction.x, 0.01f))
+		{
+			mDirectionalLight.direction = Normalize(mDirectionalLight.direction);
+		}
 
+		ImGui::ColorEdit4("Ambient##Light", &mDirectionalLight.ambient.r);
+		ImGui::ColorEdit4("Diffuse##Light", &mDirectionalLight.diffuse.r);
+		ImGui::ColorEdit4("Specular##Light", &mDirectionalLight.specular.r);
+	}
+	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		ImGui::ColorEdit4("Ambient##Material", &mRenderObject.material.ambient.r);
+		ImGui::ColorEdit4("Diffuse##Material", &mRenderObject.material.diffuse.r);
+		ImGui::ColorEdit4("Specular##Material", &mRenderObject.material.specular.r);
+		ImGui::ColorEdit4("Emissive##Material", &mRenderObject.material.emissive.r);
+		ImGui::DragFloat("SpecPower##Material", &mRenderObject.material.shininess, 0.01f, 0.0f, 100.0f);
+	}
+	mStandardEffect.DebugUI();
 	ImGui::End();
+
 }
