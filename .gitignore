@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+!/External/assimp-5.2.5/bin/
+!/External/assimp-5.2.5/lib/
