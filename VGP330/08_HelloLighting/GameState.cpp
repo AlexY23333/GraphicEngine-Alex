@@ -36,7 +36,7 @@ void GameState::Initialize()
 	mStandardEffect.Initialize(shaderFile);
 	mStandardEffect.SetCamera(mCamera);
 	mStandardEffect.SetDirectionalLight(mDirectionalLight);
-}
+}	
 
 void GameState::Terminate()
 {
