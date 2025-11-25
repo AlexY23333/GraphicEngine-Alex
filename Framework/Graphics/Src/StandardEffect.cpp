@@ -54,20 +54,30 @@ void StandardEffect::Begin()
 
 void StandardEffect::End()
 {
-	// null
+	if (mSettingsData.useShadowMap > 0 && mShadowMap != nullptr)
+	{
+		Texture :: UnbindPS(4);
+	}
 }
 
 void StandardEffect::Render(const RenderObject& renderObject)
 {
-	const Math::Matrix4 matMatrix = renderObject.transform.GetMatrix4();
+	const Math::Matrix4 matWorld = renderObject.transform.GetMatrix4();
 	const Math::Matrix4 matView = mCamera->GetViewMatrix();
 	const Math::Matrix4 matProj = mCamera->GetProjectionMatrix();
-	const Math::Matrix4 matFinal = matMatrix * matView * matProj;
+	const Math::Matrix4 matFinal = matWorld * matView * matProj;
 
 	TransformData data;
 	data.wvp = Math::Transpose(matFinal);
-	data.world = Math::Transpose(matMatrix);
+	data.world = Math::Transpose(matWorld);
 	data.viewPosition = mCamera->GetPosition();
+	if (mSettingsData.useShadowMap > 0 && mShadowMap != nullptr)
+	{
+		const Math::Matrix4 matLightView = mLightCamera->GetViewMatrix();
+		const Math::Matrix4 matLightProj = mLightCamera->GetProjectionMatrix();
+		data.lwvp = Math::Transpose(matWorld * matLightView * matLightProj);
+		mShadowMap->BindPS(4);
+	}
 	mTransformBuffer.Update(data);
 	mLightBuffer.Update(*mDirectionalLight);
 
@@ -79,6 +89,8 @@ void StandardEffect::Render(const RenderObject& renderObject)
 	settingsData.useSpecMap = (mSettingsData.useSpecMap > 0 && renderObject.specularId > 0) ? 1 : 0;
 	settingsData.useBumpMap = (mSettingsData.useBumpMap > 0 && renderObject.bumpId > 0) ? 1 : 0;
 	settingsData.bumpWeight = mSettingsData.bumpWeight;
+	settingsData.useShadowMap = mSettingsData.useShadowMap > 0 && mShadowMap != nullptr;
+	settingsData.depthBias = mSettingsData.depthBias;
 	mSettingsBuffer.Update(settingsData);
 
 	TextureCache* tc = TextureCache::Get();
@@ -93,15 +105,23 @@ void StandardEffect::Render(const RenderObject& renderObject)
 
 void StandardEffect::Render(const RenderGroup& renderGroup)
 {
-	const Math::Matrix4 matMatrix = renderGroup.transform.GetMatrix4();
+	const Math::Matrix4 matWorld = renderGroup.transform.GetMatrix4();
 	const Math::Matrix4 matView = mCamera->GetViewMatrix();
 	const Math::Matrix4 matProj = mCamera->GetProjectionMatrix();
-	const Math::Matrix4 matFinal = matMatrix * matView * matProj;
+	const Math::Matrix4 matFinal = matWorld * matView * matProj;
 
 	TransformData data;
 	data.wvp = Math::Transpose(matFinal);
-	data.world = Math::Transpose(matMatrix);
+	data.world = Math::Transpose(matWorld);
 	data.viewPosition = mCamera->GetPosition();
+	if (mSettingsData.useShadowMap > 0 && mShadowMap != nullptr)
+	{
+		const Math::Matrix4 matLightView = mLightCamera->GetViewMatrix();
+		const Math::Matrix4 matLightProj = mLightCamera->GetProjectionMatrix();
+		data.lwvp = Math::Transpose(matWorld * matLightView * matLightProj);
+		mShadowMap->BindPS(4);
+	}
+
 	mTransformBuffer.Update(data);
 	mLightBuffer.Update(*mDirectionalLight);
 	
@@ -131,12 +151,21 @@ void StandardEffect::Render(const RenderGroup& renderGroup)
 void StandardEffect::SetCamera(const Camera& camera)
 {
 	mCamera = &camera;
+}
 
+void StandardEffect::SetLightCamera(const Camera& camera)
+{
+	mLightCamera = &camera;
 }
 
 void StandardEffect::SetDirectionalLight(const DirectionalLight& directionalLight)
 {
 	mDirectionalLight = &directionalLight;
+}
+
+void StandardEffect::SetShadowMap(const Texture& shadowMap)
+{
+	mShadowMap = &shadowMap;
 }
 
 void StandardEffect::DebugUI()
@@ -164,6 +193,13 @@ void StandardEffect::DebugUI()
 			mSettingsData.useBumpMap = (useBumpMap) ? 1 : 0;
 		}
 		ImGui::DragFloat("BumpWeight", &mSettingsData.bumpWeight, 0.01f, 0.0f, 10.0f);
+
+		bool useShadowMap = mSettingsData.useShadowMap > 0;
+		if (ImGui::Checkbox("UseShadowMap", &useShadowMap))
+		{
+			mSettingsData.useShadowMap = useShadowMap ? 1 : 0;
+		}
+		ImGui::DragFloat("DepthBias", &mSettingsData.depthBias, 0.000001f, 0.0f, 1.0f, "%.6f");
 
 	}
 }

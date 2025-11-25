@@ -12,6 +12,7 @@ namespace SumEngine::Graphics
 	class Camera;
 	class RenderObject;
 	class RenderGroup;
+	class Texture;
 
 
 	class StandardEffect final
@@ -29,28 +30,31 @@ namespace SumEngine::Graphics
 			void SetCamera(const Camera& camera);
 			void SetDirectionalLight(const DirectionalLight& light);	
 
+			void SetLightCamera(const Camera& camera);
+			void SetShadowMap(const Texture& shadowMap);
+
 			void DebugUI();
 
 		private:
 			struct TransformData
 			{
-				Math::Matrix4 wvp;//world view projection matrix
+				Math::Matrix4 wvp;
+				Math::Matrix4 lwvp;	// light world view projection matrix
 				Math::Matrix4 world;
 				Math::Vector3 viewPosition;
-
-				float padding = 0.0f; // padding to make it 16 bytes
-
+				float padding = 0.0f;
 			};
 
 			struct SettingsData
 			{
-				int useDiffuseMap = 1;
+				int useDiffuseMap = 1;	// using int to keep it 16 byte aligned
 				int useNormalMap = 1;
 				int useSpecMap = 1;
 				int useBumpMap = 1;
-				float bumpWeight = 0.1f;
-				float padding[3] = { 0.0f, 0.0f, 0.0f }; // padding to make it 16 bytes
-
+				int useShadowMap = 1;
+				float bumpWeight = 0.0f;
+				float depthBias = 0.000003f;
+				float padding = 0.0f;
 			};
 
 			using TransformBuffer = TypedConstantBuffer<TransformData>;
@@ -69,10 +73,11 @@ namespace SumEngine::Graphics
 			PixelShader mPixelShader;
 			Sampler mSampler;
 
-			const Camera* mCamera = nullptr;
-			const DirectionalLight* mDirectionalLight = nullptr;
 			SettingsData mSettingsData;
-
+			const Camera* mCamera = nullptr;
+			const Camera* mLightCamera = nullptr;
+			const DirectionalLight* mDirectionalLight = nullptr;
+			const Texture* mShadowMap = nullptr;
 	};
 
 }
