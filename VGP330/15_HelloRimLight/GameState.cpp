@@ -38,15 +38,15 @@ void GameState::Initialize()
     mGround.diffuseId = TextureCache::Get()->LoadTexture("misc/concrete.jpg");
 
     // Character setup
-    mCharater.Initialize("../../Assets/Models/Amy/Amy.model");
+    mCharater.Initialize("../../Assets/Models/Paladin/Paladin.model");
     mCharater.transform.position = { -2.5f, 0.0f, 0.0f };
 
-    mCharaterOutLine.Initialize("../../Assets/Models/Amy/Amy.model");
+    mCharaterOutLine.Initialize("../../Assets/Models/Paladin/Paladin.model");
     mCharaterOutLine.transform.position = { -2.5f, 0.0f, 0.0f };
     mCharaterOutLine.transform.scale *= 1.01f;
 
     // Sphere setup
-    Mesh sphere = MeshBuilder::CreateSphere(500, 20, 1.5f);
+    Mesh sphere = MeshBuilder::CreateSphere(200, 16, 0.7f);
     mSphere.meshBuffer.Initialize(sphere);
     mSphere.transform.position.x = 0.0f;
     mSphere.transform.position.y = 1.5f;
@@ -55,10 +55,10 @@ void GameState::Initialize()
     mSphereOutline.meshBuffer.Initialize(sphere);
     mSphereOutline.transform.position.x = 0.0f;
     mSphereOutline.transform.position.y = 1.5f;
-    mSphereOutline.transform.scale = { 1.05f, 1.05f, 1.05f };
+    mSphereOutline.transform.scale = { 1.03f, 1.03f, 1.03f };
 
     // Cube setup
-    Mesh cube = MeshBuilder::CreateCube(1.0f);
+    Mesh cube = MeshBuilder::CreateCube(0.5f);
     mCube.meshBuffer.Initialize(cube);
     mCube.transform.position.x = 2.0f;
     mCube.transform.position.y = 0.5f;
@@ -67,7 +67,7 @@ void GameState::Initialize()
     mCubeOutline.meshBuffer.Initialize(cube);
     mCubeOutline.transform.position.x = 2.0f;
     mCubeOutline.transform.position.y = 0.5f;
-    mCubeOutline.transform.scale = { 1.05f, 1.05f, 1.05f };
+    mCubeOutline.transform.scale = { 1.03f, 1.03f, 1.03f };
 }
 
 void GameState::Terminate()
@@ -137,21 +137,21 @@ void GameState::Render()
 {
     // Shadow pass
     mShadowEffect.Begin();
-    mShadowEffect.Render(mSphere);
+ //   mShadowEffect.Render(mSphere);
     mShadowEffect.Render(mCube);
     mShadowEffect.Render(mCharater);
     mShadowEffect.End();
 
     // Outline pass - render slightly larger version first
     mOutlineEffect.Begin();
-    mOutlineEffect.Render(mSphereOutline);
+   // mOutlineEffect.Render(mSphereOutline);
     mOutlineEffect.Render(mCubeOutline);
     mOutlineEffect.Render(mCharaterOutLine);
     mOutlineEffect.End();
 
     // Standard pass - render normal version
     mStandardEffect.Begin();
-    mStandardEffect.Render(mSphere);
+  //  mStandardEffect.Render(mSphere);
     mStandardEffect.Render(mCube);
     mStandardEffect.Render(mGround);
     mStandardEffect.Render(mCharater);
@@ -176,8 +176,8 @@ void GameState::DebugUI()
 
     if (ImGui::CollapsingHeader("Outline Settings", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        static float outlineWidth = 0.02f;
-        static float outlineColor[3] = { 0.0f, 0.0f, 0.0f };
+        static float outlineWidth = 0.3f;
+        static float outlineColor[3] = { 255.0f, 0.0f, 0.0f };
 
         if (ImGui::DragFloat("Outline Width", &outlineWidth, 0.001f, 0.0f, 1.0f))
         {

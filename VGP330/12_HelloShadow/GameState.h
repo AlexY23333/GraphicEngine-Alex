@@ -24,4 +24,6 @@ protected:
 
 	SumEngine::Graphics::StandardEffect mStandardEffect;
 
+
+
 };
