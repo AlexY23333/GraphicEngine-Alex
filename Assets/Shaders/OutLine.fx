@@ -1,25 +1,20 @@
 // Outline.fx (Soft Gradient Outline)
 
-// ================================
-// Constant Buffers
-// ================================
+
 cbuffer TransformBuffer : register(b0)
 {
     matrix wvp;
     matrix world;
     float3 viewPosition;
-    float _pad0; // padding for 16-byte alignment
+    float _pad0;
 };
 
 cbuffer SettingsBuffer : register(b1)
 {
-    float outlineWidth; // ÂÖÀªÇøÓòãÐÖµ£¨0~1£¬Ô½´óÂÖÀªÔ½¿í£©
-    float3 outlineColor; // ÂÖÀªÑÕÉ«
+    float outlineWidth;
+    float3 outlineColor;
 };
 
-// ================================
-// Vertex I/O
-// ================================
 struct VS_INPUT
 {
     float3 position : POSITION;
@@ -52,18 +47,15 @@ VS_OUTPUT VS(VS_INPUT input)
     return output;
 }
 
-// ================================
+
 // Pixel Shader (Soft Gradient)
-// ================================
 float4 PS(VS_OUTPUT input) : SV_Target
 {
     float3 n = normalize(input.worldNormal);
     float3 v = normalize(viewPosition - input.worldPosition);
 
-    // edgeFactor: 0 = near silhouette, 1 = facing camera
     float edgeFactor = saturate(dot(n, v));
 
-    // Only draw within outline region; outside discard
     if (edgeFactor >= outlineWidth)
         discard;
 
