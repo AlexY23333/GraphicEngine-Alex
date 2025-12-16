@@ -151,6 +151,7 @@
     <ClInclude Include="Inc\Model.h" />
     <ClInclude Include="Inc\ModelCache.h" />
     <ClInclude Include="Inc\ModelIO.h" />
+    <ClInclude Include="Inc\OutlineEffect.h" />
     <ClInclude Include="Inc\PixelShader.h" />
     <ClInclude Include="Inc\PostProcessingEffect.h" />
     <ClInclude Include="Inc\RenderObject.h" />
@@ -159,6 +160,8 @@
     <ClInclude Include="Inc\ShadowEffect.h" />
     <ClInclude Include="Inc\SimpleDraw.h" />
     <ClInclude Include="Inc\StandardEffect.h" />
+    <ClInclude Include="Inc\Terrain.h" />
+    <ClInclude Include="Inc\TerrainEffect.h" />
     <ClInclude Include="Inc\Texture.h" />
     <ClInclude Include="Inc\TextureCashe.h" />
     <ClInclude Include="Inc\Transform.h" />
@@ -176,6 +179,7 @@
     <ClCompile Include="Src\MeshBuilder.cpp" />
     <ClCompile Include="Src\ModelCache.cpp" />
     <ClCompile Include="Src\ModelIO.cpp" />
+    <ClCompile Include="Src\OutlineEffect.cpp" />
     <ClCompile Include="Src\PixelShader.cpp" />
     <ClCompile Include="Src\PostProcessingEffect.cpp" />
     <ClCompile Include="Src\Precompiled.cpp">
@@ -188,6 +192,8 @@
     <ClCompile Include="Src\ShadowEffect.cpp" />
     <ClCompile Include="Src\SimpleDraw.cpp" />
     <ClCompile Include="Src\StandardEffect.cpp" />
+    <ClCompile Include="Src\Terrain.cpp" />
+    <ClCompile Include="Src\TerrainEffect.cpp" />
     <ClCompile Include="Src\Texture.cpp" />
     <ClCompile Include="Src\TextureCashe.cpp" />
     <ClCompile Include="Src\VertexShader.cpp" />

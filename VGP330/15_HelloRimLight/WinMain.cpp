@@ -7,10 +7,10 @@ using namespace SumEngine;
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
 	AppConfig config;
-	config.appname = L"Hello Post Processing";
+	config.appname = L"Hello Out Line Final!";
 
 	App& myApp = MainApp();
-	myApp.AddState<GameState>("TriangleStateShape");
+	myApp.AddState<GameState>("GameState");
 	myApp.Run(config);
 	return(0);
 }

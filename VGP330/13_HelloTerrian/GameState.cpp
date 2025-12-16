@@ -23,17 +23,40 @@ void GameState::Initialize()
 	//mCharater.Initialize("../../Assets/Models/Ortiz/Ortiz.model");
 	mCharater.Initialize("../../Assets/Models/Paladin/Paladin.model");
 
+	MeshPX screenQuad = MeshBuilder::CreateScreenQuad();
+	mScreenQuad.meshBuffer.Initialize(screenQuad);
+
+	Mesh ground = MeshBuilder::CreatePlane(10.0f, 10.0f, 1);
+	mGround.meshBuffer.Initialize(ground);
+	mGround.diffuseId = TextureCache::Get()->LoadTexture("misc/concrete.jpg");
+
+
 	std::filesystem::path shaderFile = L"../../Assets/Shaders/Standard.fx";
 	mStandardEffect.Initialize(shaderFile);
 	mStandardEffect.SetCamera(mCamera);
 	mStandardEffect.SetDirectionalLight(mDirectionalLight);
+
+	shaderFile = L"../../Assets/Shaders/PostProcessing.fx";
+	mPostProcessEffect.Initialize(shaderFile);
+	mPostProcessEffect.SetTexture(&mRenderTarget);
+	mPostProcessEffect.SetTexture(&mCombinedTexture, 1);
+
+	mCombinedTexture.Initialize("../../Assets/Images/water/water_height.jpg");
+
+	GraphicsSystem* gs = GraphicsSystem::Get();
+	const uint32_t width = gs->GetBackBufferWidth();
+	const uint32_t height = gs->GetBackBufferHeight();
+	mRenderTarget.Initialize(width, height, Texture::Format::RGBA_U8);
 }
 
 void GameState::Terminate()
 {
 	mStandardEffect.Terminate();
+	mGround.Terminate();
 	mCharater.Terminate();
-	//mRenderObject2.Terminate();
+	mRenderTarget.Terminate();
+	mPostProcessEffect.Terminate();
+	mScreenQuad.Terminate();
 }
 
 void GameState::Update(float deltaTime)
@@ -79,13 +102,16 @@ void GameState::UpdateCamera(float deltaTime)
 
 void GameState::Render()
 {
-
+	mRenderTarget.BeginRender();
 	mStandardEffect.Begin();
 		mStandardEffect.Render(mCharater);
+		mStandardEffect.Render(mGround);
 	mStandardEffect.End();
-	SimpleDraw:: AddGroundPlane(10.0f, Colors::LightGray);
-	SimpleDraw::Render(mCamera);
+	mRenderTarget.EndRender();
 
+	mPostProcessEffect.Begin();
+		mPostProcessEffect.Render(mScreenQuad);
+	mPostProcessEffect.End();
 }
 
 void GameState::DebugUI()
@@ -102,7 +128,17 @@ void GameState::DebugUI()
 		ImGui::ColorEdit4("Diffuse##Light", &mDirectionalLight.diffuse.r);
 		ImGui::ColorEdit4("Specular##Light", &mDirectionalLight.specular.r);
 	}
+	ImGui::Text("RenderTarget");
+	ImGui::Image(
+		mRenderTarget.GetRawData(),
+		{ 128,128 },
+		{ 0,0 },
+		{ 1,1 },
+		{ 1, 1, 1,1 },
+		{ 1, 1, 1,1 }
+	);
 	mStandardEffect.DebugUI();
+	mPostProcessEffect.DebugUI();
 	ImGui::End();
 
 }
