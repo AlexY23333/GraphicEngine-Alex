@@ -38,8 +38,8 @@ namespace SumEngine::Graphics
 
         struct SettingsData
         {
-            float outlineWidth = 0.3f;
-            Math::Vector3 outlineColor = { 255.0f, 0.0f, 0.0f };
+            float outlineWidth = 0.05f;
+            Math::Vector3 outlineColor = { 0.0f, 0.0f, 0.0f };
         };
 
         using TransformBuffer = TypedConstantBuffer<TransformData>;

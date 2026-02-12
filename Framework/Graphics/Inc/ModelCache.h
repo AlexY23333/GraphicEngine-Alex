@@ -25,6 +25,8 @@ namespace SumEngine::Graphics
 		ModelId LoadModel(const std::filesystem::path& filePath);
 		const Model* GetModel(ModelId id);
 
+		void AddAnimation(ModelId id, const std::filesystem::path& filePath);
+
 	private:
 		using Inventory = std::map<ModelId, std::unique_ptr<Model>>;
 		Inventory mInventory;

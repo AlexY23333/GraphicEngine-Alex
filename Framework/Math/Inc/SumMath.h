@@ -136,4 +136,9 @@ namespace SumEngine::Math
 			0.0f, 0.0f, 0.0f, 1.0f
 		};
 	}
+
+	inline Vector3 GetTranslation(const Matrix4& m)
+	{
+		return { m._41, m._42, m._43 };
+	}
 }

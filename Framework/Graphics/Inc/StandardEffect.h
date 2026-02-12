@@ -52,9 +52,9 @@ namespace SumEngine::Graphics
 				int useSpecMap = 1;
 				int useBumpMap = 1;
 				int useShadowMap = 1;
+				int useSkinning = 1;
 				float bumpWeight = 0.0f;
 				float depthBias = 0.000003f;
-				float padding = 0.0f;
 			};
 
 			using TransformBuffer = TypedConstantBuffer<TransformData>;
@@ -69,9 +69,13 @@ namespace SumEngine::Graphics
 			using SettingsBuffer = TypedConstantBuffer<SettingsData>;
 			SettingsBuffer mSettingsBuffer;
 
+			using BoneTransformBuffer = ConstantBuffer;
+
 			VertexShader mVertexShader;
 			PixelShader mPixelShader;
 			Sampler mSampler;
+
+			BoneTransformBuffer mBoneTransformBuffer;
 
 			SettingsData mSettingsData;
 			const Camera* mCamera = nullptr;

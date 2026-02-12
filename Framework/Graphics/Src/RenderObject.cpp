@@ -1,5 +1,6 @@
 #include "Precompiled.h"
 #include "RenderObject.h"
+#include "Model.h"
 
 using namespace SumEngine;
 using namespace SumEngine::Graphics;
@@ -9,15 +10,15 @@ void RenderObject::Terminate()
 	meshBuffer.Terminate();
 }
 
-void RenderGroup::Initialize(const std::filesystem::path& modelFilePath)
+void RenderGroup::Initialize(const std::filesystem::path& modelFilePath, const Animator* anim)
 {
 	modelId = ModelCache::Get()->LoadModel(modelFilePath);
 	const Model* model = ModelCache::Get()->GetModel(modelId);
 	ASSERT(model != nullptr, "RenderGroup: model %s did not load", modelFilePath.u8string().c_str());
-	Initialize(*model);
+	Initialize(*model, anim);
 }
 
-void RenderGroup::Initialize(const Model& model)
+void RenderGroup::Initialize(const Model& model, const Animator* anim)
 {
 	auto TryLoadTexture = [](const auto& textureName)-> TextureId 
 	{
@@ -27,6 +28,10 @@ void RenderGroup::Initialize(const Model& model)
 		}
 		return TextureCache::Get()->LoadTexture(textureName, false);
 	};
+
+	this->animator = anim;
+
+	skeleton = model.skeleton.get();
 
 	for (const Model::MeshData& meshData : model.meshData)
 	{
