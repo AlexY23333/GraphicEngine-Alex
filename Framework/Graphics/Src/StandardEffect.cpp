@@ -17,7 +17,7 @@ static constexpr size_t MaxBoneCount = 256;
 void StandardEffect::Initialize(const std::filesystem::path& path)
 {
 	mTransformBuffer.Initialize();
-	
+
 	mLightBuffer.Initialize();
 
 	mMaterialBuffer.Initialize();
@@ -65,7 +65,7 @@ void StandardEffect::End()
 {
 	if (mSettingsData.useShadowMap > 0 && mShadowMap != nullptr)
 	{
-		Texture :: UnbindPS(4);
+		Texture::UnbindPS(4);
 	}
 }
 
@@ -111,7 +111,7 @@ void StandardEffect::Render(const RenderObject& renderObject)
 	tc->BindVS(renderObject.bumpId, 3);
 
 	renderObject.meshBuffer.Render();
-	
+
 }
 
 void StandardEffect::Render(const RenderGroup& renderGroup)
@@ -135,7 +135,7 @@ void StandardEffect::Render(const RenderGroup& renderGroup)
 
 	mTransformBuffer.Update(data);
 	mLightBuffer.Update(*mDirectionalLight);
-	
+
 	TextureCache* tc = TextureCache::Get();
 	SettingsData settingsData;
 	settingsData.useShadowMap = (mSettingsData.useShadowMap > 0 && mShadowMap != nullptr) ? 1 : 0;
@@ -156,7 +156,7 @@ void StandardEffect::Render(const RenderGroup& renderGroup)
 		boneTransforms.resize(MaxBoneCount);
 		mBoneTransformBuffer.Update(boneTransforms.data());
 	}
-	for (const RenderObject& renderObject : renderGroup.renderObjects) 
+	for (const RenderObject& renderObject : renderGroup.renderObjects)
 	{
 		SettingsData settingsData;
 		settingsData.useDiffuseMap = (mSettingsData.useDiffuseMap > 0 && renderObject.diffuseId > 0) ? 1 : 0;
@@ -174,6 +174,9 @@ void StandardEffect::Render(const RenderGroup& renderGroup)
 
 		renderObject.meshBuffer.Render();
 	}
+	ASSERT(renderGroup.skeleton != nullptr, "RenderGroup skeleton is null!");
+	ASSERT(renderGroup.animator != nullptr, "RenderGroup animator is null!");
+
 }
 
 void StandardEffect::SetCamera(const Camera& camera)

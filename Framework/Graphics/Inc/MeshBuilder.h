@@ -33,6 +33,7 @@ namespace SumEngine::Graphics
 
 		// Screen Quad
 		static MeshPX CreateScreenQuad();
+		static MeshPX CreateSpriteQuad(float width, float height);
 
 	};
 }

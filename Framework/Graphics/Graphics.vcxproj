@@ -159,6 +159,7 @@
     <ClInclude Include="Inc\ModelCache.h" />
     <ClInclude Include="Inc\ModelIO.h" />
     <ClInclude Include="Inc\OutlineEffect.h" />
+    <ClInclude Include="Inc\ParticleSystemEffect.h" />
     <ClInclude Include="Inc\PixelShader.h" />
     <ClInclude Include="Inc\PostProcessingEffect.h" />
     <ClInclude Include="Inc\RenderObject.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Src\ModelCache.cpp" />
     <ClCompile Include="Src\ModelIO.cpp" />
     <ClCompile Include="Src\OutlineEffect.cpp" />
+    <ClCompile Include="Src\ParticleSystemEffect.cpp" />
     <ClCompile Include="Src\PixelShader.cpp" />
     <ClCompile Include="Src\PostProcessingEffect.cpp" />
     <ClCompile Include="Src\Precompiled.cpp">

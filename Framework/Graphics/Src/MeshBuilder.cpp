@@ -227,7 +227,6 @@ Mesh MeshBuilder::CreateCube(float size)
 		{ {  hs, -hs, -hs }, { 0, -1, 0 }, { 1, 0, 0 }, { 1.0f, 0.0f } }
 	};
 
-	// ¶¨ÒåË÷Òý
 	mesh.indices = {
 		0, 1, 2, 0, 2, 3,
 		4, 5, 6, 4, 6, 7,
@@ -601,5 +600,25 @@ MeshPX MeshBuilder::CreateScreenQuad()
 		0, 1, 2,
 		0, 2, 3
 	};
+	return mesh;
+}
+
+MeshPX MeshBuilder::CreateSpriteQuad(float width, float height)
+{
+	MeshPX mesh;
+
+	const float hw = width * 0.5f;
+	const float hh = height * 0.5f;
+
+	mesh.vertices.push_back({ {-hw, -hh, 0.0f}, { 0.0f, 1.0f} });
+	mesh.vertices.push_back({ {-hw,  hh, 0.0f}, { 0.0f, 0.0f} });
+	mesh.vertices.push_back({ { hw,  hh, 0.0f}, { 1.0f, 0.0f} });
+	mesh.vertices.push_back({ { hw, -hh, 0.0f}, { 1.0f, 1.0f} });
+
+	mesh.indices = {
+		0, 1, 2,
+		0, 2, 3
+	};
+
 	return mesh;
 }

@@ -1,2 +1,8 @@
 -scale 0.01 ../../Assets/Models/Ortiz/Ortiz.fbx ../../Assets/Models/Ortiz/Ortiz.model
 -scale 0.01 ../../Assets/Models/Paladin/Paladin.fbx ../../Assets/Models/Paladin/Paladin.model
+
+
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Arm_Stretching.fbx ../../Assets/Models/Paladin/Arm_Stretching.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Run_Look_Back.fbx ../../Assets/Models/Paladin/Run_Look_Back.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Breakdance_Freeze_Var3.fbx ../../Assets/Models/Paladin/Breakdance_Freeze_Var3.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Firing_Rifle.fbx ../../Assets/Models/Paladin/Firing_Rifle.model

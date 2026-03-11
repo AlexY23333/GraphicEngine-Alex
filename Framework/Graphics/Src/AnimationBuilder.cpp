@@ -34,11 +34,19 @@ AnimationBuilder& AnimationBuilder::AddScaleKey(const Math::Vector3& scale, floa
 	return *this;
 }
 
+AnimationBuilder& AnimationBuilder::AddEventKey(AnimationCallback callback, float time)
+{
+	PushKey(mWorkingCopy.mEventKeys, callback, time, EaseType::Linear);
+	mWorkingCopy.mDuration = Math::Max(mWorkingCopy.mDuration, time);
+	return *this;
+}
+
 Animation AnimationBuilder::Build()
 {
 	ASSERT(!mWorkingCopy.mPositionKeys.empty()
 		|| !mWorkingCopy.mRotationKeys.empty()
-		|| !mWorkingCopy.mScaleKeys.empty(),
+		|| !mWorkingCopy.mScaleKeys.empty()
+		|| !mWorkingCopy.mEventKeys.empty(),
 		"animationBuilder: no animation keys are present");
 	return std::move(mWorkingCopy);
 }

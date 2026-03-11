@@ -6,6 +6,8 @@ using namespace SumEngine;
 using namespace SumEngine::Core;
 using namespace SumEngine::Graphics;
 using namespace SumEngine::Input;
+using namespace SumEngine::Physics;
+using namespace SumEngine::Audio;
 
 void App::Run(const AppConfig& config)
 {
@@ -26,7 +28,11 @@ void App::Run(const AppConfig& config)
 	SimpleDraw::StaticInitialize(config.maxDrawLines);
 	TextureCache::StaticInitialize("../../Assets/Images");
 	ModelCache::StaticInitialize();
+	AudioSystem::StaticInitialize();
+	SoundEffectManager::StaticInitialize("../../Assets/Sounds");
 
+	PhysicsWorld::Settings settings;
+	PhysicsWorld::StaticInitialize(settings);
 
 	// start state
 	ASSERT(mCurrentState != nullptr, "App: no current state available");
@@ -47,6 +53,7 @@ void App::Run(const AppConfig& config)
 			Quit();
 			break;
 		}
+		AudioSystem::Get()->Update();
 
 		if (mNextState != nullptr)
 		{
@@ -62,28 +69,32 @@ void App::Run(const AppConfig& config)
 #endif
 		{
 			mCurrentState->Update(deltaTime);
+			PhysicsWorld::Get()->Update(deltaTime);
 		}
 
 		// This is where we send information from cpu to gpu
 		GraphicsSystem* gs = GraphicsSystem::Get();
 		gs->BeginRender();
-			mCurrentState->Render();
-			DebugUI::BeginRender();
-				mCurrentState->DebugUI();
-			DebugUI::EndRender();
+		mCurrentState->Render();
+		DebugUI::BeginRender();
+		mCurrentState->DebugUI();
+		DebugUI::EndRender();
 		gs->EndRender();
 	}
 	// end state
 	mCurrentState->Terminate();
 
 	// terminate singletons
+	PhysicsWorld::StaticTerminate();
 	ModelCache::StaticTerminate();
 	TextureCache::StaticTerminate();
 	SimpleDraw::StaticTerminate();
 	DebugUI::StaticTerminate();
 	InputSystem::StaticTerminate();
 	GraphicsSystem::StaticTerminate();
-	
+	SoundEffectManager::StaticTerminate();
+	AudioSystem::StaticTerminate();
+
 	myWindow.Terminate();
 }
 
