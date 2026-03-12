@@ -150,6 +150,9 @@
     <ClCompile Include="Src\SumEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Audio\Audio.vcxproj">
+      <Project>{78f8e8ba-6fde-476f-b5fb-eee87f7ea902}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Core\Core.vcxproj">
       <Project>{e6c1874f-7010-4426-a3dc-b90e92023d73}</Project>
     </ProjectReference>
@@ -161,6 +164,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Framework\Math\Math.vcxproj">
       <Project>{d1ca39ee-e8d8-4137-ada1-9e35f5d47ac2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Framework\Physics\Physics.vcxproj">
+      <Project>{7d953c1e-56a6-4d43-bc76-569bb5c326ff}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

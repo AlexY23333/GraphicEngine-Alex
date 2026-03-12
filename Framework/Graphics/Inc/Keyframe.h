@@ -5,7 +5,7 @@ namespace SumEngine::Graphics
 {
 	enum class EaseType
 	{
-		Linear,EaseIn, EaseOut, EaseInOut
+		Linear, EaseIn, EaseOut, EaseInOut
 	};
 
 	template<class T>
@@ -27,7 +27,11 @@ namespace SumEngine::Graphics
 	template<class T>
 	using Keyframes = std::vector<Keyframe<T>>;
 
+	using AnimationCallback = std::function<void()>;
+
 	using PositionKeys = Keyframes<Math::Vector3>;
 	using RotationKeys = Keyframes<Math::Quaternion>;
 	using ScaleKeys = Keyframes<Math::Vector3>;
+
+	using EventKeys = Keyframes<AnimationCallback>;
 }
