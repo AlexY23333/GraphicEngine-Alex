@@ -21,16 +21,18 @@ void GameState::Initialize()
 	TextureCache* tc = TextureCache::Get();
 	
 	//mCharater.Initialize("../../Assets/Models/Ortiz/Ortiz.model");
-//	mCharater.Initialize("../../Assets/Models/Paladin/Paladin.model", &mCharacterAnimator);
-	mCharater.Initialize("../../Assets/Models/Amy/Amy.model", &mCharacterAnimator);
+	mCharater.Initialize("../../Assets/Models/Paladin/Paladin.model", &mCharacterAnimator);
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Salute.model");
+
+
+
+	/*mCharater.Initialize("../../Assets/Models/Amy/Amy.model", &mCharacterAnimator);
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Amy/Arm_Stretching.model");
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Amy/Run_Look_Back.model");
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Amy/Breakdance_Freeze_Var3.model");
-	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Amy/Amy_Firing_Rifle.model");
-//	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Arm_Stretching.model");
-	//ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Run_Look_Back.model");
-	//ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Breakdance_Freeze_Var3.model");
-//	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Firing_Rifle.model");
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Amy/Amy_Firing_Rifle.model");*/
+
+
 	mCharacterAnimator.Initialize(mCharater.modelId);
 	mCharacterAnimator.PlayAnimation(0, true); // Start with the first animation
 

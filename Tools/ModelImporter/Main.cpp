@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
 
 	}
 
-	if (scene->HasMaterials() && !args.animationOnly) 
+	if (scene->HasMaterials() && !args.animationOnly)
 	{
 		printf("Reading meterial data..\n");
 
@@ -470,7 +470,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	if (!args.animationOnly) 
+	if (!args.animationOnly)
 	{
 		printf("Saving Model...\n");
 		ModelIO::SaveModel(args.outputFileName, model);
