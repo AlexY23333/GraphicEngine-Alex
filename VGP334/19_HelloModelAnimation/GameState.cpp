@@ -23,6 +23,9 @@ void GameState::Initialize()
 	//mCharater.Initialize("../../Assets/Models/Ortiz/Ortiz.model");
 	mCharater.Initialize("../../Assets/Models/Paladin/Paladin.model", &mCharacterAnimator);
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Salute.model");
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/JumpingDown.model");
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/HHDanceM.model");
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/HHDanceF.model");
 
 
 

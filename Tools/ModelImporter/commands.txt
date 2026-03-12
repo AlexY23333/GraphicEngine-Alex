@@ -8,8 +8,8 @@
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Firing_Rifle.fbx ../../Assets/Models/Paladin/Firing_Rifle.model
 
 
--scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Jumping_Down.fbx ../../Assets/Models/Paladin/Jumping_Down.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/JumpingDown.fbx ../../Assets/Models/Paladin/JumpingDown.model
 
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Salute.fbx ../../Assets/Models/Paladin/Salute.model
--scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Hip_Hop_Dancing_f.fbx ../../Assets/Models/Paladin/Hip_Hop_Dancing_f.model
--scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Hip_Hop_Dancing_m.fbx ../../Assets/Models/Paladin/Hip_Hop_Dancing_m.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/HHDanceM.fbx ../../Assets/Models/Paladin/HHDanceM.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/HHDanceF.fbx ../../Assets/Models/Paladin/HHDanceF.model
