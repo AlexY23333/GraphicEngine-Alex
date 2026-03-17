@@ -85,7 +85,7 @@ namespace
 			// top triangle
 			int topRowIndex = topIndex - slices - 1 + s;
 			indices.push_back(topIndex);
-			indices.push_back(topRowIndex +1);
+			indices.push_back(topRowIndex + 1);
 			indices.push_back(topRowIndex);
 		}
 	}
@@ -112,7 +112,7 @@ MeshPC MeshBuilder::CreateCubePC(float size)
 	mesh.vertices.push_back({ {  hs,  hs, hs }, GetNextColor(index) });
 	mesh.vertices.push_back({ {  hs, -hs, hs }, GetNextColor(index) });
 
-	
+
 	// indices
 	CreateCubeIndices(mesh.indices);
 
@@ -347,7 +347,7 @@ MeshPC MeshBuilder::CreateRectPC(float width, float length, float height)
 	MeshPC mesh;
 
 	int index = rand() % 10;
-	
+
 	const float hw = width * 0.5f;
 	const float hh = height * 0.5f;
 	const float hl = length * 0.5f;
@@ -464,7 +464,7 @@ MeshPC MeshBuilder::CreateCylinderPC(int slices, int rings)
 	MeshPC mesh;
 
 	int index = rand() % 10;
-	
+
 	const float hh = static_cast<float>(rings) * 0.5f;
 
 	for (int r = 0; r <= rings; ++r)

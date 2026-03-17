@@ -13,3 +13,6 @@
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Salute.fbx ../../Assets/Models/Paladin/Salute.model
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/HHDanceM.fbx ../../Assets/Models/Paladin/HHDanceM.model
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/HHDanceF.fbx ../../Assets/Models/Paladin/HHDanceF.model
+
+
+-scale 0.01 ../../Assets/Models/ET/ET.fbx ../../Assets/Models/ET/ET.model

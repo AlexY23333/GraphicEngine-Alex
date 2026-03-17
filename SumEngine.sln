@@ -90,6 +90,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bullet", "External\Bullet\B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTKAudio_Desktop_2022_Win8", "External\DirectXTK\Audio\DirectXTKAudio_Desktop_2022_Win8.vcxproj", "{4F150A30-CECB-49D1-8283-6A3F57438CF5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "21_HelloParticleSystem", "VGP334\21_HelloParticleSystem\21_HelloParticleSystem.vcxproj", "{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -346,6 +348,14 @@ Global
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x64.Build.0 = Release|x64
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x86.ActiveCfg = Release|Win32
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x86.Build.0 = Release|Win32
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Debug|x64.ActiveCfg = Debug|x64
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Debug|x64.Build.0 = Debug|x64
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Debug|x86.ActiveCfg = Debug|Win32
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Debug|x86.Build.0 = Debug|Win32
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Release|x64.ActiveCfg = Release|x64
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Release|x64.Build.0 = Release|x64
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Release|x86.ActiveCfg = Release|Win32
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -383,6 +393,7 @@ Global
 		{5209663E-3E7B-43F8-921E-1BB7AC5EF4F3} = {E6F74955-20D8-4924-B193-57EFC99886BC}
 		{516192EB-788A-4FE7-B2B7-2EF9AC036B12} = {9B740904-0C02-4FC2-8E02-A3D382C43E73}
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5} = {9B740904-0C02-4FC2-8E02-A3D382C43E73}
+		{2FDAA71E-9078-4082-ABE7-9FCA69BE2451} = {E6F74955-20D8-4924-B193-57EFC99886BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8FE74B6F-6EB1-4809-B285-5C9440857B8D}
