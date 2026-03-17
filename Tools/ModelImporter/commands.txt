@@ -16,3 +16,9 @@
 
 
 -scale 0.01 ../../Assets/Models/ET/ET.fbx ../../Assets/Models/ET/ET.model
+
+
+-scale 0.01 ../../Assets/Models/Vanguard/Vanguard.fbx ../../Assets/Models/Vanguard/Vanguard.model
+
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/VGDanceTwerk.fbx ../../Assets/Models/Vanguard/VGDanceTwerk.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/VGJumpD.fbx ../../Assets/Models/Vanguard/VGJumpD.model
