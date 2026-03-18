@@ -42,11 +42,11 @@ private:
 	void UpdateScene5(float deltaTime);
 	void UpdateScene6(float deltaTime);
 	void UpdateScene7(float deltaTime);
-	void UpdateScene8(float deltaTime);
-	void UpdateScene9(float deltaTime);
 
 	SumEngine::Graphics::Camera mCamera;
 	SumEngine::Graphics::DirectionalLight mDirectionalLight;
+
+
 	SumEngine::Graphics::StandardEffect mStandardEffect;
 	SumEngine::Graphics::RenderObject mGround;
 
@@ -71,6 +71,8 @@ private:
 
 	SumEngine::Graphics::Animation mCameraAnimation;
 
+	SumEngine::Graphics::Animation mCameraLastAnimation;
+
 	SceneState mCurrentScene = SceneState::Scene1;
 	float mSceneTime = 0.0f;
 	float mScene2Timer = 0.0f;
@@ -84,6 +86,7 @@ private:
 
 
 	bool mFireworkTriggered = false;
+	bool mFireworkTriggered1 = false;
 
 	bool mIsCharacter2Visible = false;
 	bool mIsCharacter1Visible = false;
@@ -98,5 +101,9 @@ private:
 	SumEngine::Math::Vector3 mCamDirection = { 0.0f, 0.0f, 1.0f };
 	SumEngine::Math::Vector3 mCamLookAt = { 0.0f, 0.0f, 0.0f };
 
-
+	SumEngine::Graphics::MeshBuffer mSkyboxMeshBuffer;
+	SumEngine::Graphics::VertexShader mSkyboxVS;
+	SumEngine::Graphics::PixelShader mSkyboxPS;
+	SumEngine::Graphics::Texture mSkyboxTexture;
+	SumEngine::Graphics::ConstantBuffer mSkyboxCB;
 };

@@ -11,10 +11,11 @@ void GameState::Initialize()
 {
 
 
-	mDirectionalLight.direction = Normalize({ -0.6, -1.0f, 1.0f });
-	mDirectionalLight.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
-	mDirectionalLight.diffuse = { 0.7f, 0.7f, 0.7f, 1.0f };
-	mDirectionalLight.specular = { 0.9f, 0.9f, 0.9f, 1.0f };
+	mDirectionalLight.direction = Normalize({ 0.999, -0.010f, 0.040f });
+	mDirectionalLight.ambient = { 1, 1, 1, 1 };
+	mDirectionalLight.diffuse = { 1, 1, 1, 1 };
+	mDirectionalLight.specular = { 1, 1, 1, 1 };
+
 
 	std::filesystem::path shaderFile = L"../../Assets/Shaders/Standard.fx";
 	mStandardEffect.Initialize(shaderFile);
@@ -74,6 +75,10 @@ void GameState::Initialize()
 	mCamera.SetDirection(Normalize({ 0.600f, -0.456f, 0.657f }));
 
 
+	mCameraAnimation = AnimationBuilder()
+		.AddPositionKey({ -2.494f, 3.103f, -5.326f }, 0.0f)
+		.AddPositionKey({ -3.147f, 2.894f, -0.221f }, 4.0f, EaseType::EaseInOut)
+		.Build();
 
 
 	mCurrentScene = SceneState::Scene1;
@@ -89,8 +94,20 @@ void GameState::Initialize()
 	mScene9Timer = 0.0f;
 
 	mFireworkTriggered = false;
+	mFireworkTriggered1 = false;
 	mIsCharacter2Visible = true;
 	mIsPaused = false;
+
+	MeshPX mesh = MeshBuilder::CreateSkySpherePX(50, 50, 100.0f);
+	mSkyboxMeshBuffer.Initialize<MeshPX>(mesh);
+
+	std::filesystem::path skyboxShader = L"../../Assets/Shaders/DoTexture.fx";
+	mSkyboxVS.Initialize<VertexPX>(skyboxShader);
+	mSkyboxPS.Initialize(skyboxShader);
+
+	mSkyboxTexture.Initialize("../../Assets/Images/skysphere/sky.jpg");
+
+	mSkyboxCB.Initialize(sizeof(Matrix4));
 }
 
 
@@ -130,15 +147,10 @@ void GameState::Update(float deltaTime)
 		case SceneState::Scene6:
 			UpdateScene6(deltaTime);
 			break;
-	/*	case SceneState::Scene7:
+		case SceneState::Scene7:
 			UpdateScene7(deltaTime);
 			break;
-		case SceneState::Scene8:
-			UpdateScene8(deltaTime);
-			break;
-		case SceneState::Scene9:
-			UpdateScene9(deltaTime);
-			break;*/
+
 		}
 	}
 
@@ -154,18 +166,20 @@ void GameState::Update(float deltaTime)
 
 	}
 
-	/*	mCameraAnimation = AnimationBuilder()
-.AddPositionKey({ -2.494f, 3.103f, -5.326f }, 0.0f)
-.AddPositionKey({ 0.259f, 1.357f, -1.846f }, 1.5f, EaseType::EaseInOut)
-.Build();*/
+			
 }
 
 void GameState::UpdateScene1(float deltaTime)
 {
 	mSceneTime += deltaTime;
+	
+	Vector3 currentPos = mCameraAnimation.GetTransform(mSceneTime).position;
+	mCamera.SetPosition(currentPos);
 
-	mCamera.SetPosition({ -2.494f, 3.103f, -5.326f });
-	mCamera.SetDirection(Normalize({ 0.600f, -0.456f, 0.657f }));
+	// look at character2
+	mCamera.SetLookAt({ 0.400f, 0.000f, -3.000f });
+
+
 	mCharater.transform.position = { 0.000f, 0.000f, 0.000f };
 	mCharater.transform.rotation = Quaternion::CreateFromYawPitchRoll(0.000f, 0.00f, 0.000f);
 
@@ -175,16 +189,13 @@ void GameState::UpdateScene1(float deltaTime)
 	mCharacter3.transform.position = { 2.400f, 0.000f, -1.200f };
 	mCharacter3.transform.rotation = Quaternion::CreateFromYawPitchRoll(0.0f, 1.7f, 0.000f);
 
-	if (mSceneTime >= 0.1f && !mFireworkTriggered)
+	if (mSceneTime >= 0.1f && !mFireworkTriggered1)
 	{
 		PlayBGM();
-		mFirework.Start({ -5.0f, 0.3f, 8.0f });
-		mFirework2.Start({ 0.0f, 0.3f, 10.0f });
-		mFirework3.Start({ 5.0f, 0.3f, 8.0f });
-		mFireworkTriggered = true;
 		mCharacterAnimator.PlayAnimation(0, true);
 		mCharacterAnimator2.PlayAnimation(0, true);
 		mCharacterAnimator3.PlayAnimation(0, true);
+		mFireworkTriggered1 = true;
 	}
 	//can you move like this
 	if (mSceneTime >= 4.5f) {
@@ -194,16 +205,6 @@ void GameState::UpdateScene1(float deltaTime)
 
 
 	}
-
-
-	//Vector3 startDir = Normalize({ 0.550f, -0.321f, 0.771f });
-	//Vector3 endDir = Normalize({ 0.550f, -0.321f, 0.771f });
-	//float t = Clamp((mSceneTime - 1.0f) / (mSceneDuration - 1.0f), 0.0f, 1.0f);
-
-	//Vector3 currentPos = mCameraAnimation.GetTransform(mSceneTime).position;
-	//Vector3 currentDir = Normalize(Lerp(startDir, endDir, t));
-	//mCamera.SetPosition(currentPos);
-	//mCamera.SetDirection(currentDir);
 
 }
 
@@ -222,23 +223,7 @@ void GameState::UpdateScene2(float deltaTime)
 
 	}
 
-	//mCamera.SetPosition({ 0.636f, 1.061f, -2.046f });
-	//mCamera.SetDirection(Normalize({ -0.527f, -0.207f, 0.824f }));
 
-
-
-	//if (mScene2Timer >= 0.5f)
-	//{
-	//	mCharacterAnimator.PlayAnimation(2, true);
-	//}
-
-	//if (mScene2Timer >= 1.5f)
-	//{
-	//	mCurrentScene = SceneState::Scene3;
-
-	//	mCharacterAnimator.PlayAnimation(3, false);
-	//	mCharacterAnimator2.PlayAnimation(1, true);
-	//}
 }
 
 void GameState::UpdateScene3(float deltaTime)
@@ -285,7 +270,7 @@ void GameState::UpdateScene5(float deltaTime)
 	{
 		mCurrentScene = SceneState::Scene6;
 		mScene6Timer = 0.0f;
-		mCharacterAnimator3.PlayAnimation(1, false);
+		mCharacterAnimator3.PlayAnimation(1, true);
 	}
 }
 
@@ -294,66 +279,92 @@ void GameState::UpdateScene6(float deltaTime)
 	mCamera.SetPosition({ 0.289f, 1.805f, 1.642f });
 	mCamera.SetDirection(Normalize({ 0.363f, -0.198f, -0.910f }));
 
-	/*mCamera.SetPosition({ -1.014, 0.954, -1.569 });
-	mCamera.SetDirection({ 0.922, -0.264, 0.284 });
-
 	mScene6Timer += deltaTime;
-	mScene7Timer == 0.0f;
 
-	if (mScene6Timer >= 2.0f)
+	if (mScene6Timer >= 5.0f)
 	{
 		mCurrentScene = SceneState::Scene7;
-		mCharacterAnimator2.PlayAnimation(0, false);
-		mCharacterAnimator.PlayAnimation(5, false);
-	}*/
+		mScene7Timer = 0.0f;
+
+		mCharacterAnimator.PlayAnimation(5, true);
+		mCharacterAnimator2.PlayAnimation(0, true);
+		mCharacterAnimator3.PlayAnimation(0, true);
+
+
+		mCharater.transform.position = { 0.000f, 0.000f, 0.000f };
+		mCharater.transform.rotation = Quaternion::CreateFromYawPitchRoll(0.000f, 0.00f, 0.000f);
+
+		mCharacter2.transform.position = { 3.000f, 0.000f, 0.000f };
+		mCharacter2.transform.rotation = Quaternion::CreateFromYawPitchRoll(0.0f, 0.0f, 0.000f);
+
+		mCharacter3.transform.position = { 1.500f, 0.000f, 3.00f };
+		mCharacter3.transform.rotation = Quaternion::CreateFromYawPitchRoll(0.0f, 0.0f, 0.000f);
+
+		StopBGM();
+		PlayBGM2();
+
+
+		mFirework.Start({ -5.0f, 0.3f, 8.0f });
+		mFirework2.Start({ 0.0f, 0.3f, 10.0f });
+		mFirework3.Start({ 5.0f, 0.3f, 8.0f });
+	
+	
+
+		mCameraLastAnimation = AnimationBuilder()
+			.AddPositionKey( Vector3{ 6.0f,      2, -3.0 }, 0.0f, EaseType::Linear)
+			.AddPositionKey( Vector3{ 0.0f,    2,  -3.0 }, 2.0f, EaseType::Linear)
+			.AddPositionKey( Vector3{ -6.0f,    2,  -3.0 }, 6.0f, EaseType::Linear)
+			.AddPositionKey( Vector3{ 0.0f,      2, -3.0 }, 8.0f, EaseType::Linear)
+			.Build();
+
+	/*	mCameraLastAnimation = AnimationBuilder()
+			.AddPositionKey({ -0.463f, 0.106f, -2.697f }, 0.0f)
+			.AddPositionKey({ 1.500f, 0.800f, -3.200f }, 1.5f, EaseType::EaseInOut)
+			.AddPositionKey({ 3.500f, 1.000f, -1.500f }, 3.0f, EaseType::EaseInOut)
+			.AddPositionKey({ 3.200f, 1.100f,  1.500f }, 4.5f, EaseType::EaseInOut)
+			.AddPositionKey({ 1.500f, 0.900f,  3.500f }, 6.0f, EaseType::EaseInOut)
+			.Build();*/
+
+
+	}
 }
 
-//void GameState::UpdateScene7(float deltaTime)
-//{
-//	mCamera.SetPosition({ 0.636f, 1.061f, -2.046f });
-//	mCamera.SetDirection(Normalize({ -0.527f, -0.207f, 0.824f }));
-//
-//	mScene7Timer += deltaTime;
-//	mScene8Timer == 0.0f;
-//
-//	if (mScene7Timer >= 2.0f)
-//	{
-//		mCurrentScene = SceneState::Scene8;
-//
-//		mCharacterAnimator2.PlayAnimation(5, false);
-//	}
-//}
-//
-//void GameState::UpdateScene8(float deltaTime)
-//{
-//	mCamera.SetPosition({ 5.255, 2.399, -1.592 });
-//	mCamera.SetDirection({ 0.152, -0.657, 0.739 });
-//
-//	mScene8Timer += deltaTime;
-//	mScene9Timer == 0.0f;
-//
-//	if (mScene8Timer >= 3.0f)
-//	{
-//		mCurrentScene = SceneState::Scene9;
-//
-//		mCharacterAnimator2.PlayAnimation(-1, false);
-//		mCharacterAnimator.PlayAnimation(6, true);
-//		PlayBGM2();
-//	}
-//}
-//
-//void GameState::UpdateScene9(float deltaTime)
-//{
-//	mCamera.SetPosition({ 0.509, 0.958, 0.663 });
-//	mCamera.SetDirection({ -0.966, -0.128, -0.223 });
-//
-//	mScene9Timer += deltaTime;
-//}
+void GameState::UpdateScene7(float deltaTime)
+{
+	mScene7Timer += deltaTime;
+	Vector3 currentPos = mCameraLastAnimation.GetTransform(mScene7Timer).position;
+
+
+
+	mCamera.SetPosition(currentPos);
+	mCamera.SetLookAt({ 1.500f, 1.000f, 3.00f });
+
+	/*mCamera.SetPosition({ -0.463, 0.106, -2.697 });
+	mCamera.SetDirection({0.390, 0.208, 0.897 });*/
+
+	
+	
+}
 
 
 
 void GameState::Render()
 {
+	mSkyboxVS.Bind();
+	mSkyboxPS.Bind();
+
+	mSkyboxTexture.BindPS(0);
+
+	Matrix4 matWorld = Matrix4::Translation(mCamera.GetPosition());
+	Matrix4 matView = mCamera.GetViewMatrix();
+	Matrix4 matProj = mCamera.GetProjectionMatrix();
+
+	Matrix4 wvp = Transpose(matWorld * matView * matProj);
+	mSkyboxCB.Update(&wvp);
+	mSkyboxCB.BindVS(0);
+
+	mSkyboxMeshBuffer.Render();
+
 	mStandardEffect.SetCamera(mCamera);
 
 	SimpleDraw::AddTransform(mTempTransform.GetMatrix4());
@@ -531,4 +542,10 @@ void GameState::Terminate()
 	mCharacter2.Terminate();
 	mCharacter3.Terminate();
 	mGround.Terminate();
+
+	mSkyboxCB.Terminate();
+	mSkyboxTexture.Terminate();
+	mSkyboxPS.Terminate();
+	mSkyboxVS.Terminate();
+	mSkyboxMeshBuffer.Terminate();
 }
