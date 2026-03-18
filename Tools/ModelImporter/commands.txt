@@ -16,6 +16,7 @@
 
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Idle.fbx ../../Assets/Models/Paladin/Idle.model
 
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Walking.fbx ../../Assets/Models/Paladin/Walking.model
 
 
 
@@ -23,9 +24,19 @@
 
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/VGDanceTwerk.fbx ../../Assets/Models/Vanguard/VGDanceTwerk.model
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/VGJumpD.fbx ../../Assets/Models/Vanguard/VGJumpD.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/Walking.fbx ../../Assets/Models/Vanguard/Walking.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/HappyIdle.fbx ../../Assets/Models/Vanguard/HappyIdle.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Vanguard/WaveDance.fbx ../../Assets/Models/Vanguard/WaveDance.model
+
 
 
 
 -scale 0.10 ../../Assets/Models/Medea/Medea.fbx ../../Assets/Models/Medea/Medea.model
 
 -scale 0.10 -animationOnly 1 ../../Assets/Models/Medea/Idle.fbx ../../Assets/Models/Medea/Idle.model
+
+
+-scale 0.01 ../../Assets/Models/Ninja/Ninja.fbx ../../Assets/Models/Ninja/Ninja.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Ninja/BoredIdle.fbx ../../Assets/Models/Ninja/BoredIdle.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Ninja/HipHopDancing.fbx ../../Assets/Models/Ninja/HipHopDancing.model
+

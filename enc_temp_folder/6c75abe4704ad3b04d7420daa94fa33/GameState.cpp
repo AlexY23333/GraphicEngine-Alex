@@ -291,9 +291,6 @@ void GameState::UpdateScene5(float deltaTime)
 
 void GameState::UpdateScene6(float deltaTime)
 {
-	mCamera.SetPosition({ 0.289f, 1.805f, 1.642f });
-	mCamera.SetDirection(Normalize({ 0.363f, -0.198f, -0.910f }));
-
 	/*mCamera.SetPosition({ -1.014, 0.954, -1.569 });
 	mCamera.SetDirection({ 0.922, -0.264, 0.284 });
 

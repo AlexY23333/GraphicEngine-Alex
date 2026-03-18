@@ -97,4 +97,6 @@ private:
 	SumEngine::Math::Vector3 mCamPosition = { 0.0f, 0.0f, 0.0f };
 	SumEngine::Math::Vector3 mCamDirection = { 0.0f, 0.0f, 1.0f };
 	SumEngine::Math::Vector3 mCamLookAt = { 0.0f, 0.0f, 0.0f };
+
+
 };
