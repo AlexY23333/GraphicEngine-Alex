@@ -17,6 +17,7 @@
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Idle.fbx ../../Assets/Models/Paladin/Idle.model
 
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/Walking.fbx ../../Assets/Models/Paladin/Walking.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Paladin/WaveDance.fbx ../../Assets/Models/Paladin/WaveDance.model
 
 
 
@@ -39,4 +40,6 @@
 -scale 0.01 ../../Assets/Models/Ninja/Ninja.fbx ../../Assets/Models/Ninja/Ninja.model
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Ninja/BoredIdle.fbx ../../Assets/Models/Ninja/BoredIdle.model
 -scale 0.01 -animationOnly 1 ../../Assets/Models/Ninja/HipHopDancing.fbx ../../Assets/Models/Ninja/HipHopDancing.model
+-scale 0.01 -animationOnly 1 ../../Assets/Models/Ninja/WaveDance.fbx ../../Assets/Models/Ninja/WaveDance.model
+
 

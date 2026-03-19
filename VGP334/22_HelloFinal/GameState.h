@@ -11,9 +11,7 @@ enum class SceneState
 	Scene4,
 	Scene5,
 	Scene6,
-	Scene7,
-	Scene8,
-	Scene9
+	Scene7
 };
 
 class GameState : public SumEngine::AppState
@@ -81,8 +79,7 @@ private:
 	float mScene5Timer = 0.0f;
 	float mScene6Timer = 0.0f;
 	float mScene7Timer = 0.0f;
-	float mScene8Timer = 0.0f;
-	float mScene9Timer = 0.0f;
+
 
 
 	bool mFireworkTriggered = false;

@@ -23,7 +23,7 @@ void GameState::Initialize()
 	mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
 	mBgmId = SoundEffectManager::Get()->Load("../../Assets/Sounds/LeePace.wav");
-	mBgmId2 = SoundEffectManager::Get()->Load("../../Assets/Sounds/Autumn.wav");
+	mBgmId2 = SoundEffectManager::Get()->Load("../../Assets/Sounds/30K.wav");
 
 	Mesh groundMesh = MeshBuilder::CreatePlane(20, 20, 1.0f);
 	mGround.meshBuffer.Initialize(groundMesh);
@@ -37,7 +37,7 @@ void GameState::Initialize()
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/Salute.model");
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/JumpingDown.model");
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/HHDanceF.model");
-	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/HHDanceF.model");
+	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/WaveDance.model");
 	ModelCache::Get()->AddAnimation(mCharater.modelId, "../../Assets/Models/Paladin/HHDanceF.model");
 
 
@@ -62,6 +62,7 @@ void GameState::Initialize()
 	mCharacter3.Initialize("../../Assets/Models/Ninja/Ninja.model", &mCharacterAnimator3);
 	ModelCache::Get()->AddAnimation(mCharacter3.modelId, "../../Assets/Models/Ninja/BoredIdle.model");
 	ModelCache::Get()->AddAnimation(mCharacter3.modelId, "../../Assets/Models/Ninja/HipHopDancing.model");
+	ModelCache::Get()->AddAnimation(mCharacter3.modelId, "../../Assets/Models/Ninja/WaveDance.model");
 
 
 	mCharacterAnimator3.Initialize(mCharacter3.modelId);
@@ -90,8 +91,7 @@ void GameState::Initialize()
 	mScene5Timer = 0.0f;
 	mScene6Timer = 0.0f;
 	mScene7Timer = 0.0f;
-	mScene8Timer = 0.0f;
-	mScene9Timer = 0.0f;
+
 
 	mFireworkTriggered = false;
 	mFireworkTriggered1 = false;
@@ -287,8 +287,8 @@ void GameState::UpdateScene6(float deltaTime)
 		mScene7Timer = 0.0f;
 
 		mCharacterAnimator.PlayAnimation(5, true);
-		mCharacterAnimator2.PlayAnimation(0, true);
-		mCharacterAnimator3.PlayAnimation(0, true);
+		mCharacterAnimator2.PlayAnimation(2, true);
+		mCharacterAnimator3.PlayAnimation(2, true);
 
 
 		mCharater.transform.position = { 0.000f, 0.000f, 0.000f };
