@@ -1,6 +1,7 @@
 #include "Precompiled.h"
 #include "App.h"
 #include "AppState.h"
+#include "EventManager.h"
 
 using namespace SumEngine;
 using namespace SumEngine::Core;
@@ -26,10 +27,11 @@ void App::Run(const AppConfig& config)
 	InputSystem::StaticInitialize(handle);
 	DebugUI::StaticInitialize(handle, false, true);
 	SimpleDraw::StaticInitialize(config.maxDrawLines);
-	TextureCache::StaticInitialize("../../Assets/Images");
+	TextureCache::StaticInitialize("../../Assets/Images/");
 	ModelCache::StaticInitialize();
+	EventManager::StaticInitialize();
 	AudioSystem::StaticInitialize();
-	SoundEffectManager::StaticInitialize("../../Assets/Sounds");
+	SoundEffectManager::StaticInitialize("../../Assets/Sounds/");
 
 	PhysicsWorld::Settings settings;
 	PhysicsWorld::StaticInitialize(settings);
@@ -53,6 +55,7 @@ void App::Run(const AppConfig& config)
 			Quit();
 			break;
 		}
+
 		AudioSystem::Get()->Update();
 
 		if (mNextState != nullptr)
@@ -75,10 +78,10 @@ void App::Run(const AppConfig& config)
 		// This is where we send information from cpu to gpu
 		GraphicsSystem* gs = GraphicsSystem::Get();
 		gs->BeginRender();
-		mCurrentState->Render();
-		DebugUI::BeginRender();
-		mCurrentState->DebugUI();
-		DebugUI::EndRender();
+			mCurrentState->Render();
+			DebugUI::BeginRender();
+				mCurrentState->DebugUI();
+			DebugUI::EndRender();
 		gs->EndRender();
 	}
 	// end state
@@ -86,15 +89,16 @@ void App::Run(const AppConfig& config)
 
 	// terminate singletons
 	PhysicsWorld::StaticTerminate();
+	SoundEffectManager::StaticTerminate();
+	AudioSystem::StaticTerminate();
+	EventManager::StaticTerminate();
 	ModelCache::StaticTerminate();
 	TextureCache::StaticTerminate();
 	SimpleDraw::StaticTerminate();
 	DebugUI::StaticTerminate();
 	InputSystem::StaticTerminate();
 	GraphicsSystem::StaticTerminate();
-	SoundEffectManager::StaticTerminate();
-	AudioSystem::StaticTerminate();
-
+	
 	myWindow.Terminate();
 }
 

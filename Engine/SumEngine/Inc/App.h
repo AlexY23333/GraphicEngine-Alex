@@ -6,8 +6,8 @@ namespace SumEngine
 	struct AppConfig
 	{
 		std::wstring appname = L"AppName";
-		uint32_t winWidth = 1920;
-		uint32_t winHeight = 1080;
+		uint32_t winWidth = 1280;
+		uint32_t winHeight = 720;
 		uint32_t maxDrawLines = 100000;
 	};
 
@@ -40,7 +40,7 @@ namespace SumEngine
 
 	private:
 		using AppStateMap = std::map<std::string, std::unique_ptr<AppState>>;
-
+		
 		AppStateMap mAppStates;
 		AppState* mCurrentState = nullptr;
 		AppState* mNextState = nullptr;
