@@ -91,6 +91,76 @@ namespace
 	}
 }
 
+Mesh MeshBuilder::CreateCube(float size)
+{
+	Mesh mesh;
+
+	const float hs = size * 0.5f;
+	const float ot = 1.0f / 3.0f;
+	const float tt = 2.0f / 3.0f;
+
+	// front
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ { -hs,  hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, {0.25f, ot} });
+	mesh.vertices.push_back({ {  hs,  hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, { 0.5f, ot} });
+
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ {  hs,  hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, { 0.5f, ot} });
+	mesh.vertices.push_back({ {  hs, -hs, -hs}, { 0.0f, 0.0f, -1.0f}, { -1.0f, 0.0f, 0.0f }, { 0.5f, tt} });
+
+	// right
+	mesh.vertices.push_back({ {  hs, -hs, -hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.5f, tt} });
+	mesh.vertices.push_back({ {  hs,  hs, -hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.5f, ot} });
+	mesh.vertices.push_back({ {  hs,  hs,  hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, {0.75f, ot} });
+
+	mesh.vertices.push_back({ {  hs, -hs, -hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, { 0.5f, tt} });
+	mesh.vertices.push_back({ {  hs,  hs,  hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, {0.75f, ot} });
+	mesh.vertices.push_back({ {  hs, -hs,  hs}, { 1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, -1.0f }, {0.75f, tt} });
+
+	// back
+	mesh.vertices.push_back({ {  hs, -hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, {0.75f, tt} });
+	mesh.vertices.push_back({ {  hs,  hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, {0.75f, ot} });
+	mesh.vertices.push_back({ { -hs,  hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, { 1.0f, ot} });
+
+	mesh.vertices.push_back({ {  hs, -hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, {0.75f, tt} });
+	mesh.vertices.push_back({ { -hs,  hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, { 1.0f, ot} });
+	mesh.vertices.push_back({ { -hs, -hs,  hs}, { 0.0f, 0.0f, 1.0f}, { 1.0f, 0.0f, 0.0f }, { 1.0f, tt} });
+
+	// left
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ { -hs,  hs,  hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, ot} });
+	mesh.vertices.push_back({ { -hs,  hs, -hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, {0.25f, ot} });
+
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ { -hs, -hs,  hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, tt} });
+	mesh.vertices.push_back({ { -hs,  hs,  hs}, { -1.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, { 0.0f, ot} });
+
+	// top
+	mesh.vertices.push_back({ { -hs,  hs, -hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, {0.25f, ot} });
+	mesh.vertices.push_back({ { -hs,  hs,  hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, {0.25f,0.0f} });
+	mesh.vertices.push_back({ {  hs,  hs,  hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, { 0.5f,0.0f} });
+
+	mesh.vertices.push_back({ { -hs,  hs, -hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, {0.25f, ot} });
+	mesh.vertices.push_back({ {  hs,  hs,  hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, { 0.5f,0.0f} });
+	mesh.vertices.push_back({ {  hs,  hs, -hs}, { 0.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, { 0.5f, ot} });
+
+	// bottom
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ {  hs, -hs,  hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, { 0.5f,1.0f} });
+	mesh.vertices.push_back({ { -hs, -hs,  hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, {0.25f,1.0f} });
+
+	mesh.vertices.push_back({ { -hs, -hs, -hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, {0.25f, tt} });
+	mesh.vertices.push_back({ {  hs, -hs, -hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, { 0.5f, tt} });
+	mesh.vertices.push_back({ {  hs, -hs,  hs}, { 0.0f, -1.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, { 0.5f,1.0f} });
+
+	for (uint32_t i = 0; i < mesh.vertices.size(); ++i)
+	{
+		mesh.indices.push_back(i);
+	}
+
+	return mesh;
+}
+
 MeshPC MeshBuilder::CreateCubePC(float size)
 {
 	MeshPC mesh;
@@ -186,55 +256,6 @@ MeshPX MeshBuilder::CreateCubePX(float size)
 	{
 		mesh.indices.push_back(i);
 	}
-
-	return mesh;
-}
-
-Mesh MeshBuilder::CreateCube(float size)
-{
-	Mesh mesh;
-	const float hs = size * 0.5f;
-
-	mesh.vertices = {
-		{ { -hs, -hs, -hs }, { 0, 0, -1 }, { 1, 0, 0 }, { 0.0f, 1.0f } },
-		{ { -hs,  hs, -hs }, { 0, 0, -1 }, { 1, 0, 0 }, { 0.0f, 0.0f } },
-		{ {  hs,  hs, -hs }, { 0, 0, -1 }, { 1, 0, 0 }, { 1.0f, 0.0f } },
-		{ {  hs, -hs, -hs }, { 0, 0, -1 }, { 1, 0, 0 }, { 1.0f, 1.0f } },
-
-		{ { -hs, -hs,  hs }, { 0, 0, 1 }, { -1, 0, 0 }, { 1.0f, 1.0f } },
-		{ { -hs,  hs,  hs }, { 0, 0, 1 }, { -1, 0, 0 }, { 1.0f, 0.0f } },
-		{ {  hs,  hs,  hs }, { 0, 0, 1 }, { -1, 0, 0 }, { 0.0f, 0.0f } },
-		{ {  hs, -hs,  hs }, { 0, 0, 1 }, { -1, 0, 0 }, { 0.0f, 1.0f } },
-
-		{ { -hs, -hs, -hs }, { -1, 0, 0 }, { 0, 0, 1 }, { 0.0f, 1.0f } },
-		{ { -hs,  hs, -hs }, { -1, 0, 0 }, { 0, 0, 1 }, { 0.0f, 0.0f } },
-		{ { -hs,  hs,  hs }, { -1, 0, 0 }, { 0, 0, 1 }, { 1.0f, 0.0f } },
-		{ { -hs, -hs,  hs }, { -1, 0, 0 }, { 0, 0, 1 }, { 1.0f, 1.0f } },
-
-		{ {  hs, -hs, -hs }, { 1, 0, 0 }, { 0, 0, -1 }, { 1.0f, 1.0f } },
-		{ {  hs,  hs, -hs }, { 1, 0, 0 }, { 0, 0, -1 }, { 1.0f, 0.0f } },
-		{ {  hs,  hs,  hs }, { 1, 0, 0 }, { 0, 0, -1 }, { 0.0f, 0.0f } },
-		{ {  hs, -hs,  hs }, { 1, 0, 0 }, { 0, 0, -1 }, { 0.0f, 1.0f } },
-
-		{ { -hs,  hs, -hs }, { 0, 1, 0 }, { 1, 0, 0 }, { 0.0f, 1.0f } },
-		{ { -hs,  hs,  hs }, { 0, 1, 0 }, { 1, 0, 0 }, { 0.0f, 0.0f } },
-		{ {  hs,  hs,  hs }, { 0, 1, 0 }, { 1, 0, 0 }, { 1.0f, 0.0f } },
-		{ {  hs,  hs, -hs }, { 0, 1, 0 }, { 1, 0, 0 }, { 1.0f, 1.0f } },
-
-		{ { -hs, -hs, -hs }, { 0, -1, 0 }, { 1, 0, 0 }, { 0.0f, 0.0f } },
-		{ { -hs, -hs,  hs }, { 0, -1, 0 }, { 1, 0, 0 }, { 0.0f, 1.0f } },
-		{ {  hs, -hs,  hs }, { 0, -1, 0 }, { 1, 0, 0 }, { 1.0f, 1.0f } },
-		{ {  hs, -hs, -hs }, { 0, -1, 0 }, { 1, 0, 0 }, { 1.0f, 0.0f } }
-	};
-
-	mesh.indices = {
-		0, 1, 2, 0, 2, 3,
-		4, 5, 6, 4, 6, 7,
-		8, 9, 10, 8, 10, 11,
-		12, 13, 14, 12, 14, 15,
-		16, 17, 18, 16, 18, 19,
-		20, 21, 22, 20, 22, 23
-	};
 
 	return mesh;
 }
@@ -427,7 +448,7 @@ MeshPX MeshBuilder::CreatePlanePX(int numRows, int numCols, float spacing)
 	return mesh;
 }
 
-Mesh SumEngine::Graphics::MeshBuilder::CreatePlane(int numRows, int numCols, float spacing)
+Mesh MeshBuilder::CreateGroundPlane(int numRows, int numCols, float spacing)
 {
 	Mesh mesh;
 
@@ -445,7 +466,7 @@ Mesh SumEngine::Graphics::MeshBuilder::CreatePlane(int numRows, int numCols, flo
 	{
 		for (int c = 0; c <= numCols; ++c)
 		{
-			mesh.vertices.push_back({ { x, 0.0f, z },Math::Vector3::YAxis, Math::Vector3::XAxis, { u, v } });
+			mesh.vertices.push_back({ { x, 0.0f, z }, Math::Vector3::YAxis, Math::Vector3::XAxis, { u, v } });
 			x += spacing;
 			u += uInc;
 		}
@@ -458,6 +479,8 @@ Mesh SumEngine::Graphics::MeshBuilder::CreatePlane(int numRows, int numCols, flo
 	CreatePlaneIndices(mesh.indices, numRows, numCols);
 	return mesh;
 }
+
+
 
 MeshPC MeshBuilder::CreateCylinderPC(int slices, int rings)
 {
@@ -571,10 +594,10 @@ Mesh MeshBuilder::CreateSphere(int slices, int rings, float radius)
 
 			float u = 1.0f - (uStep * slice);
 			float v = vStep * ring;
+
 			float x = radius * sin(rotation) * sin(phi);
 			float y = radius * cos(phi);
 			float z = radius * cos(rotation) * sin(phi);
-
 			const Math::Vector3 pos = { x, y, z };
 			const Math::Vector3 norm = Math::Normalize(pos);
 			const Math::Vector3 tang = abs(Math::Dot(norm, Math::Vector3::YAxis)) < 0.999f ? Math::Normalize({ -z, 0.0f, x }) : Math::Vector3::ZAxis;
@@ -591,15 +614,12 @@ Mesh MeshBuilder::CreateSphere(int slices, int rings, float radius)
 MeshPX MeshBuilder::CreateScreenQuad()
 {
 	MeshPX mesh;
+	mesh.vertices.push_back({ {-1.0f, -1.0f, 0.0f}, { 0.0f, 1.0f} });	// corner and UV
+	mesh.vertices.push_back({ {-1.0f,  1.0f, 0.0f}, { 0.0f, 0.0f} });
+	mesh.vertices.push_back({ { 1.0f,  1.0f, 0.0f}, { 1.0f, 0.0f} });
+	mesh.vertices.push_back({ { 1.0f, -1.0f, 0.0f}, { 1.0f, 1.0f} });
+	mesh.indices = { 0 , 1, 2, 0 , 2 , 3 };								// 2 triangles
 
-	mesh.vertices.push_back({ { -1.0f, -1.0f, 0.0f }, { 0.0f, 1.0f } });
-	mesh.vertices.push_back({ { -1.0f,  1.0f, 0.0f }, { 0.0f, 0.0f } });
-	mesh.vertices.push_back({ {  1.0f,  1.0f, 0.0f }, { 1.0f, 0.0f } });
-	mesh.vertices.push_back({ {  1.0f, -1.0f, 0.0f }, { 1.0f, 1.0f } });
-	mesh.indices = {
-		0, 1, 2,
-		0, 2, 3
-	};
 	return mesh;
 }
 
