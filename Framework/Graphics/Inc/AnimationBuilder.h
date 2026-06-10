@@ -1,5 +1,5 @@
 #pragma once
-#include "Common.h"
+
 #include "Animation.h"
 
 namespace SumEngine::Graphics
@@ -7,10 +7,11 @@ namespace SumEngine::Graphics
 	class AnimationBuilder
 	{
 	public:
-		AnimationBuilder& AddPositionKey(const Math::Vector3& pos, float time, EaseType ease = EaseType::Linear);
-		AnimationBuilder& AddRotationKey(const Math::Quaternion& rot, float time, EaseType ease = EaseType::Linear);
-		AnimationBuilder& AddScaleKey(const Math::Vector3& scale, float time, EaseType ease = EaseType::Linear);
-		AnimationBuilder& AddEventKey(AnimationCallback callback, float time);
+		AnimationBuilder& AddPositionKey(const Math::Vector3& pos, float time);
+		AnimationBuilder& AddRotationKey(const Math::Quaternion& rot, float time);
+		AnimationBuilder& AddScaleKey(const Math::Vector3& scale, float time);
+		AnimationBuilder& AddEventKey(AnimationCallback cb, float time);
+		AnimationBuilder& AddParameterEventKey(AnimationParameterCallback cb, float time);
 
 		[[nodiscard]] Animation Build();
 

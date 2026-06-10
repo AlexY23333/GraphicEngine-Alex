@@ -36,7 +36,7 @@ namespace SumEngine::Graphics
 
 		void SetTexture(const Texture* texture, uint32_t slot = 0);
 		void SetMode(Mode mode);
-
+		
 		void DebugUI();
 
 	private:
@@ -47,6 +47,7 @@ namespace SumEngine::Graphics
 			float param1 = 0.0f;
 			float param2 = 0.0f;
 		};
+
 		using PostProcessBuffer = TypedConstantBuffer<PostProcessData>;
 		PostProcessBuffer mPostProcessBuffer;
 

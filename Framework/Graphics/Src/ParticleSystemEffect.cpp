@@ -58,10 +58,8 @@ void ParticleSystemEffect::Render(const Transform& transform, const Color& color
 	const Math::Vector3 localPos = Math::TransformCoord(transform.position, mCamera->GetViewMatrix());
 	const Math::Matrix4 matLocalTrans = Math::Matrix4::Translation(localPos);
 	const Math::Matrix4 matScale = Math::Matrix4::Scaling(transform.scale);
-
 	const Math::Matrix4 matProj = mCamera->GetProjectionMatrix();
 	const Math::Matrix4 matFinal = Transpose(matScale * matLocalTrans * matProj);
-
 	mParticleBuffer.Update(matFinal);
 	mColorBuffer.Update(color);
 	mParticle.Render();

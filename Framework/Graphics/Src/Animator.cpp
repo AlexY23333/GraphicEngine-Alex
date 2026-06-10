@@ -1,8 +1,8 @@
 #include "Precompiled.h"
 #include "Animator.h"
 
-using namespace SumEngine::Graphics;
 using namespace SumEngine;
+using namespace SumEngine::Graphics;
 
 void Animator::Initialize(ModelId id)
 {

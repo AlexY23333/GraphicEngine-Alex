@@ -18,7 +18,7 @@ namespace SumEngine::Graphics
 
 		// Rectangle
 		static MeshPC CreateRectPC(float width, float length, float height);
-
+	
 		// Plane
 		static MeshPC CreatePlanePC(int numRows, int numCols, float spacing);
 		static MeshPX CreatePlanePX(int numRows, int numCols, float spacing);
@@ -37,6 +37,5 @@ namespace SumEngine::Graphics
 
 		// Sprite Quad
 		static MeshPX CreateSpriteQuad(float width, float height);
-
 	};
 }

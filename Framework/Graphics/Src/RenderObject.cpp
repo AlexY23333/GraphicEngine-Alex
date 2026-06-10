@@ -10,29 +10,28 @@ void RenderObject::Terminate()
 	meshBuffer.Terminate();
 }
 
-void RenderGroup::Initialize(const std::filesystem::path& modelFilePath, const Animator* anim)
+void RenderGroup::Initialize(const std::filesystem::path& modelFilePath, const Animator* animator)
 {
 	modelId = ModelCache::Get()->LoadModel(modelFilePath);
 	const Model* model = ModelCache::Get()->GetModel(modelId);
 	ASSERT(model != nullptr, "RenderGroup: model %s did not load", modelFilePath.u8string().c_str());
-	Initialize(*model, anim);
+	Initialize(*model, animator);
 }
 
-void RenderGroup::Initialize(const Model& model, const Animator* anim)
+void RenderGroup::Initialize(const Model& model, const Animator* animator)
 {
-	auto TryLoadTexture = [](const auto& textureName)-> TextureId 
-	{
-		if (textureName.empty())
+	auto TryLoadTexture = [](const auto& textureName)->TextureId
 		{
-			return 0;
-		}
-		return TextureCache::Get()->LoadTexture(textureName, false);
-	};
+			if (textureName.empty())
+			{
+				return 0;
+			}
 
-	this->animator = anim;
+			return TextureCache::Get()->LoadTexture(textureName, false);
+		};
 
+	this->animator = animator;
 	skeleton = model.skeleton.get();
-
 	for (const Model::MeshData& meshData : model.meshData)
 	{
 		RenderObject& renderObject = renderObjects.emplace_back();
@@ -41,10 +40,10 @@ void RenderGroup::Initialize(const Model& model, const Animator* anim)
 		{
 			const Model::MaterialData& materialData = model.materialData[meshData.materialIndex];
 			renderObject.material = materialData.material;
-			renderObject.diffuseId = TryLoadTexture(materialData.diffuseMapName);
-			renderObject.normalId = TryLoadTexture(materialData.normalMapName);
-			renderObject.specularId = TryLoadTexture(materialData.specMapName);
-			renderObject.bumpId = TryLoadTexture(materialData.bumpMapName);
+			renderObject.diffuseMapId = TryLoadTexture(materialData.diffuseMapName);
+			renderObject.normalMapId = TryLoadTexture(materialData.normalMapName);
+			renderObject.specMapId = TryLoadTexture(materialData.specMapName);
+			renderObject.bumpMapId = TryLoadTexture(materialData.bumpMapName);
 		}
 	}
 }

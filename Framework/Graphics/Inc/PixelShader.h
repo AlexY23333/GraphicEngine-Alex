@@ -6,6 +6,7 @@ namespace SumEngine::Graphics
 	{
 	public:
 		void Initialize(const std::filesystem::path& filePath);
+		void Initialize(const std::filesystem::path& filePath, const char* entryPoint);
 		void Terminate();
 		void Bind();
 

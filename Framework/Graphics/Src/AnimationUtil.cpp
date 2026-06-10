@@ -3,8 +3,8 @@
 #include "Color.h"
 #include "SimpleDraw.h"
 
-using namespace SumEngine::Graphics;
 using namespace SumEngine;
+using namespace SumEngine::Graphics;
 
 namespace
 {

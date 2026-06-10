@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 namespace SumEngine::Graphics
 {
 	struct Bone
@@ -13,7 +15,7 @@ namespace SumEngine::Graphics
 		std::vector<Bone*> children;
 		std::vector<int> childrenIndices;
 
-		Math::Matrix4 toParentTransform;
-		Math::Matrix4 offsetTransform;
+		Math::Matrix4 toParentTransform;	// local transform
+		Math::Matrix4 offsetTransform;		// more for skinning. Offset from T-pose. Offset from base pose of the model
 	};
 }

@@ -6,36 +6,13 @@ using namespace SumEngine::Graphics;
 
 namespace
 {
-	float GetLerpTime(float startTime, float endTime, float time, EaseType ease)
+	float GetLerpTime(float startTime, float endTime, float time)
 	{
 		float t = (time - startTime) / (endTime - startTime);
-		switch (ease)
-		{
-		case EaseType::EaseIn:
-			t = t * t;
-			break;
-		case EaseType::EaseOut:
-			t = -t * (t - 2.0f);
-			break;
-		case EaseType::EaseInOut:
-		{
-			t*=2.0f;
-			if (t < 1.0f)
-			{
-				t = 0.5f * t * t;
-			}
-			else
-			{
-				t -= 1.0f;
-				t = -0.5f * (t * (t - 2.0f) - 1.0f);
-			}
-			break;
-		}
-		case EaseType::Linear:
-			break;
-		default:
-			break;
-		}
+		t = t * t;	// Ease in
+		// Ease out = (t*(2-t))
+		// Ease in out:
+		
 		return Math::Clamp(t, 0.0f, 1.0f);
 	}
 }
@@ -54,13 +31,24 @@ float Animation::GetDuration() const
 	return mDuration;
 }
 
-void Animation::PlayEvents(float prevTime, float curTime)
+void Animation::PlayEvent(float prevTime, float curTime)
 {
 	for (uint32_t i = 0; i < mEventKeys.size(); ++i)
 	{
 		if (mEventKeys[i].time > prevTime && mEventKeys[i].time <= curTime)
 		{
 			mEventKeys[i].key();
+		}
+	}
+}
+
+void Animation::PlayParameterEvent(float prevTime, float curTime, const Event& key)
+{
+	for (uint32_t i = 0; i < mEventParameterKeys.size(); ++i)
+	{
+		if (mEventParameterKeys[i].time > prevTime && mEventParameterKeys[i].time <= curTime)
+		{
+			mEventParameterKeys[i].key(key);
 		}
 	}
 }
@@ -76,12 +64,12 @@ Math::Vector3 Animation::GetPosition(float time) const
 	{
 		if (time < mPositionKeys[i].time)
 		{
-			float t = GetLerpTime(mPositionKeys[i - 1].time, mPositionKeys[i].time, time, mPositionKeys[i].easeType);
+			float t = GetLerpTime(mPositionKeys[i - 1].time, mPositionKeys[i].time, time);
 			return Math::Lerp(mPositionKeys[i - 1].key, mPositionKeys[i].key, t);
 		}
 	}
 
-	return mPositionKeys.back().key;
+	return mPositionKeys.back().key;	// return last frame if key is outside of time frame
 }
 
 Math::Quaternion Animation::GetRotation(float time) const
@@ -95,7 +83,7 @@ Math::Quaternion Animation::GetRotation(float time) const
 	{
 		if (time < mRotationKeys[i].time)
 		{
-			float t = GetLerpTime(mRotationKeys[i - 1].time, mRotationKeys[i].time, time, mRotationKeys[i].easeType);
+			float t = GetLerpTime(mRotationKeys[i - 1].time, mRotationKeys[i].time, time);
 			return Math::Quaternion::Slerp(mRotationKeys[i - 1].key, mRotationKeys[i].key, t);
 		}
 	}
@@ -114,7 +102,7 @@ Math::Vector3 Animation::GetScale(float time) const
 	{
 		if (time < mScaleKeys[i].time)
 		{
-			float t = GetLerpTime(mScaleKeys[i - 1].time, mScaleKeys[i].time, time, mScaleKeys[i].easeType);
+			float t = GetLerpTime(mScaleKeys[i - 1].time, mScaleKeys[i].time, time);
 			return Math::Lerp(mScaleKeys[i - 1].key, mScaleKeys[i].key, t);
 		}
 	}

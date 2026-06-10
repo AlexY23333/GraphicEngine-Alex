@@ -11,70 +11,80 @@ namespace SumEngine::Graphics
 {
 	class Camera;
 	class RenderObject;
-	class RenderGroup;
 	class Texture;
 
-	class StandardEffect final
+	class WaterEffect final
 	{
 	public:
-		void Initialize(const std::filesystem::path& path);
+		void Initialize();
 		void Terminate();
 
 		void Begin();
 		void End();
 
+		void Update(float deltaTime);
+
 		void Render(const RenderObject& renderObject);
-		void Render(const RenderGroup& renderGroup);
 
 		void SetCamera(const Camera& camera);
 		void SetLightCamera(const Camera& camera);
 		void SetDirectionalLight(const DirectionalLight& directionalLight);
-		void SetShadowMap(const Texture& shadowMap);
 
 		void DebugUI();
 
 	private:
-		struct TransformData
+		// Transform
+		struct WaterTransform
 		{
 			Math::Matrix4 wvp;
-			Math::Matrix4 lwvp;	// light world view projection matrix
 			Math::Matrix4 world;
 			Math::Vector3 viewPosition;
 			float padding = 0.0f;
 		};
 
+		// Light
+		// Texture
+		// Refract = change the normal value
+
 		struct SettingsData
 		{
-			int useDiffuseMap = 1;	// using int to keep it 16 byte aligned
-			int useNormalMap = 1;
-			int useSpecMap = 1;
-			int useBumpMap = 1;
-			int useShadowMap = 1;
-			int useSkinning = 1;
-			float bumpWeight = 0.0f;
-			float depthBias = 0.000003f;
+			// Add all the settings for the water waves here
+			float amplitude1 = 0.3f;
+			float amplitude2 = 0.1f;
+			float amplitude3 = 0.2f;
+			float waveLength1 = 0.2f;
+			float waveLength2 = 0.3f;
+			float waveLength3 = 0.1f;
+			float speed = 0.2f;
+			float waveTime = 0.0f;
+			//float padding[2] = { 0.0f };
 		};
 
-		using TransformBuffer = TypedConstantBuffer<TransformData>;
-		using LightBuffer = TypedConstantBuffer<DirectionalLight>;
-		using MaterialBuffer = TypedConstantBuffer<Material>;
+		using TransformBuffer = TypedConstantBuffer<WaterTransform>;
 		using SettingsBuffer = TypedConstantBuffer<SettingsData>;
-		using BoneTransformBuffer = ConstantBuffer;
+		//using LightBuffer = TypedConstantBuffer<DirectionalLight>;
 
 		TransformBuffer mTransformBuffer;
-		LightBuffer mLightBuffer;
-		MaterialBuffer mMaterialBuffer;
 		SettingsBuffer mSettingsBuffer;
-		BoneTransformBuffer mBoneTransformBuffer;
 
 		VertexShader mVertexShader;
 		PixelShader mPixelShader;
 		Sampler mSampler;
-
 		SettingsData mSettingsData;
+		//LightBuffer mLightBuffer;
+
+
 		const Camera* mCamera = nullptr;
 		const Camera* mLightCamera = nullptr;
 		const DirectionalLight* mDirectionalLight = nullptr;
-		const Texture* mShadowMap = nullptr;
+
+		// Steps overall
+		// Get waves going
+		// Add peaks
+		// Refraction
+		// 
+
+		// Pass the texture created by the water into the standard
+		// And check if the pixel being rendered is behind the water
 	};
 }

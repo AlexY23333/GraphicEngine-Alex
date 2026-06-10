@@ -78,8 +78,8 @@ void TerrainEffect::Render(const RenderObject& renderObject)
 	mMaterialBuffer.Update(renderObject.material);
 
 	TextureCache* tc = TextureCache::Get();
-	tc->BindPS(renderObject.diffuseId, 0);
-	tc->BindPS(renderObject.normalId, 1);
+	tc->BindPS(renderObject.diffuseMapId, 0);
+	tc->BindPS(renderObject.normalMapId, 1);
 
 	renderObject.meshBuffer.Render();
 }
@@ -93,7 +93,6 @@ void TerrainEffect::DebugUI()
 		{
 			mSettingsData.useBlend = useBlend ? 1 : 0;
 		}
-		ImGui::DragFloat("BlendHeight", &mSettingsData.blendHeight, 0.1f, 0.0f, 20.0f);
 		ImGui::DragFloat("BlendHeight", &mSettingsData.blendHeight, 0.1f, 0.0f, 20.0f);
 		ImGui::DragFloat("BlendThickness", &mSettingsData.blendThickness, 0.1f, 0.0f, 20.0f);
 	}

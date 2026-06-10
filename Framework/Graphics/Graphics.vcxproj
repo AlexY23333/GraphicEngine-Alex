@@ -183,10 +183,12 @@
     <ClCompile Include="Src\AnimationBuilder.cpp" />
     <ClCompile Include="Src\AnimationUtil.cpp" />
     <ClCompile Include="Src\Animator.cpp" />
+    <ClCompile Include="Src\BillboardEffect.cpp" />
     <ClCompile Include="Src\BlendState.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\ConstantBuffer.cpp" />
     <ClCompile Include="Src\DebugUI.cpp" />
+    <ClCompile Include="Src\GaussianBlurEffect.cpp" />
     <ClCompile Include="Src\GraphicsSystem.cpp" />
     <ClCompile Include="Src\MeshBuffer.cpp" />
     <ClCompile Include="Src\MeshBuilder.cpp" />
@@ -194,7 +196,9 @@
     <ClCompile Include="Src\ModelIO.cpp" />
     <ClCompile Include="Src\OutlineEffect.cpp" />
     <ClCompile Include="Src\ParticleSystemEffect.cpp" />
-    <ClCompile Include="Src\PixelShader.cpp" />
+    <ClCompile Include="Src\PixelShader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Src\PostProcessingEffect.cpp" />
     <ClCompile Include="Src\Precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -209,8 +213,10 @@
     <ClCompile Include="Src\Terrain.cpp" />
     <ClCompile Include="Src\TerrainEffect.cpp" />
     <ClCompile Include="Src\Texture.cpp" />
+    <ClCompile Include="Src\TextureCache.cpp" />
     <ClCompile Include="Src\TextureCashe.cpp" />
     <ClCompile Include="Src\VertexShader.cpp" />
+    <ClCompile Include="Src\WaterEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\External\DirectXTK\DirectXTK_Desktop_2019.vcxproj">

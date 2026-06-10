@@ -7,7 +7,7 @@
 #include "BlendState.h"
 #include "Color.h"
 #include "MeshBuffer.h"
-#include "TextureCashe.h"
+#include "TextureCache.h"
 
 namespace SumEngine::Graphics
 {

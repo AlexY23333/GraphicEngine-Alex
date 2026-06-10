@@ -1,5 +1,6 @@
 #pragma once
 
+
 namespace SumEngine::Graphics
 {
 	class ConstantBuffer
@@ -29,10 +30,10 @@ namespace SumEngine::Graphics
 			static_assert(sizeof(DataType) % 16 == 0, "Data must be 16 byte aligned");
 			ConstantBuffer::Initialize(sizeof(DataType));
 		}
+
 		void Update(const DataType& data) const
 		{
 			ConstantBuffer::Update(&data);
 		}
 	};
-
 }

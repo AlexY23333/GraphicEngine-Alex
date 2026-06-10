@@ -1,37 +1,33 @@
 #pragma once
+
 #include "Common.h"
+#include "../Engine/SumEngine/Inc/Event.h"
 
 namespace SumEngine::Graphics
 {
-	enum class EaseType
-	{
-		Linear, EaseIn, EaseOut, EaseInOut
-	};
-
 	template<class T>
 	struct Keyframe
 	{
 		Keyframe() = default;
-		Keyframe(const T& k, float t, EaseType e = EaseType::Linear)
+		Keyframe(const T& k, float t)
 			: key(k)
 			, time(t)
-			, easeType(e)
-		{}
+		{
+		}
 
 		T key = T();
 		float time = 0.0f;
-
-		EaseType easeType = EaseType::Linear;
 	};
 
 	template<class T>
 	using Keyframes = std::vector<Keyframe<T>>;
 
 	using AnimationCallback = std::function<void()>;
+	using AnimationParameterCallback = std::function<void(const Event&)>;
 
 	using PositionKeys = Keyframes<Math::Vector3>;
 	using RotationKeys = Keyframes<Math::Quaternion>;
 	using ScaleKeys = Keyframes<Math::Vector3>;
-
 	using EventKeys = Keyframes<AnimationCallback>;
+	using EventParameterKeys = Keyframes<AnimationParameterCallback>;
 }

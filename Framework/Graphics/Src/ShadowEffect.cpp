@@ -3,6 +3,7 @@
 
 #include "RenderObject.h"
 #include "VertexTypes.h"
+
 using namespace SumEngine;
 using namespace SumEngine::Graphics;
 
@@ -49,7 +50,7 @@ void ShadowEffect::Render(const RenderObject& renderObject)
 	const Math::Matrix4 matWorld = renderObject.transform.GetMatrix4();
 	const Math::Matrix4 matView = mLightCamera.GetViewMatrix();
 	const Math::Matrix4 matProj = mLightCamera.GetProjectionMatrix();
-
+	
 	TransformData data;
 	data.wvp = Math::Transpose(matWorld * matView * matProj);
 	mTransformBuffer.Update(data);
@@ -83,7 +84,7 @@ void ShadowEffect::DebugUI()
 			{ 1, 1 },
 			{ 1, 1, 1, 1 },
 			{ 1, 1, 1, 1 });
-		ImGui::DragFloat("Size of shadow##Shadow", &mSize, 1.0f, 1.0f, 1000.0f);
+		ImGui::DragFloat("Size##Shadow", &mSize, 1.0f, 1.0f, 1000.0f);
 	}
 }
 

@@ -45,7 +45,7 @@ void Terrain::Initialize(const std::filesystem::path& fileName, float maxHeight,
 	{
 		for (uint32_t x = 0; x < mColumns - 1; ++x)
 		{
-			const uint32_t bl = x + (z * mColumns);
+			const uint32_t bl = x + (z * mColumns); // bottom left
 			const uint32_t tl = x + ((z + 1) * mColumns);
 			const uint32_t br = (x + 1) + (z * mColumns);
 			const uint32_t tr = (x + 1) + ((z + 1) * mColumns);

@@ -198,7 +198,7 @@ void SimpleDraw::AddFilledAABB(float minX, float minY, float minZ, float maxX, f
 
 	// back
 	AddFace(brb, trb, tlb, color);
-	AddFace(brb, tlb, blb, color);
+	AddFace(brb, tlb , blb, color);
 
 	// right
 	AddFace(brf, trf, trb, color);

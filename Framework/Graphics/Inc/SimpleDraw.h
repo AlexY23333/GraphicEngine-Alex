@@ -29,7 +29,7 @@ namespace SumEngine::Graphics
 		void AddFilledOval(int slices, int rings, float radiusX, float radiusY, float radiusZ, const Math::Vector3& pos, const Color& color);
 
 		void AddCone(int slices, float radius, const Math::Vector3& circlePos, const Math::Vector3& coneTip, const Color& color);
-
+		
 		void AddGroundPlane(float size, const Color& color);
 
 		void AddTransform(const Math::Matrix4& m);

@@ -1,5 +1,5 @@
 #pragma once
-#include "Common.h"
+
 #include "Keyframe.h"
 #include "Transform.h"
 
@@ -10,7 +10,9 @@ namespace SumEngine::Graphics
 	public:
 		Transform GetTransform(float time) const;
 		float GetDuration() const;
-		void PlayEvents(float prevTime, float curTime);
+
+		void PlayEvent(float prevTime, float curTime);
+		void PlayParameterEvent(float prevTime, float curTime, const Event& key);
 
 	private:
 		Math::Vector3 GetPosition(float time) const;
@@ -23,10 +25,9 @@ namespace SumEngine::Graphics
 		PositionKeys mPositionKeys;
 		RotationKeys mRotationKeys;
 		ScaleKeys mScaleKeys;
-		float mDuration = 0.0f;
-
 		EventKeys mEventKeys;
+		EventParameterKeys mEventParameterKeys;
 
-
+		float mDuration;
 	};
 }

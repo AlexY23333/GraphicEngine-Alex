@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Camera.h"
 #include "ConstantBuffer.h"
 #include "DirectionalLight.h"
