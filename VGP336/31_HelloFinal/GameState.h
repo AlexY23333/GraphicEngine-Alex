@@ -35,7 +35,7 @@ protected:
 
 	SumEngine::Math::Vector3 mPlayerVelocity = SumEngine::Math::Vector3::Zero;
 	SumEngine::Math::Vector3 mSpawnPosition = { 0.0f, 2.0f, 0.0f };
-	SumEngine::Math::Vector3 mGoalPosition = { 18.0f, 3.3f, 0.0f };
+	SumEngine::Math::Vector3 mGoalPosition = { 29.5f, 5.85f, 0.0f };
 
 	bool mIsGrounded = false;
 	bool mHasWon = false;

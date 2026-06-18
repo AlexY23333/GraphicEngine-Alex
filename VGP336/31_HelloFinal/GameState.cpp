@@ -30,11 +30,17 @@ void GameState::Initialize()
 	mGameWorld.AddService<RenderService>();
 	mGameWorld.Initialize(32);
 
-	CreatePlatform("Start", { 0.0f, 0.0f, 0.0f }, { 5.0f, 0.5f, 5.0f });
-	CreatePlatform("Step01", { 5.0f, 1.1f, 0.0f }, { 3.0f, 0.5f, 3.0f });
-	CreatePlatform("Step02", { 9.0f, 2.0f, 1.8f }, { 3.0f, 0.5f, 3.0f });
-	CreatePlatform("Step03", { 13.5f, 2.7f, -1.2f }, { 3.2f, 0.5f, 3.2f });
-	CreatePlatform("FinishPlatform", { 18.0f, 2.8f, 0.0f }, { 4.0f, 0.5f, 4.0f });
+	CreatePlatform("Start", { 0.0f, 0.0f, 0.0f }, { 6.0f, 0.5f, 5.0f });
+	CreatePlatform("WarmupStep", { 4.7f, 0.8f, 1.8f }, { 2.8f, 0.5f, 2.8f });
+	CreatePlatform("LeftFork", { 8.0f, 1.45f, -1.5f }, { 2.6f, 0.5f, 2.6f });
+	CreatePlatform("RightFork", { 8.3f, 1.55f, 2.7f }, { 2.4f, 0.5f, 2.4f });
+	CreatePlatform("NarrowBridge", { 11.8f, 2.05f, 0.4f }, { 4.2f, 0.45f, 1.1f });
+	CreatePlatform("LandingDeck", { 15.4f, 2.55f, 0.4f }, { 3.4f, 0.5f, 3.0f });
+	CreatePlatform("HighStep01", { 18.5f, 3.25f, -2.0f }, { 2.4f, 0.5f, 2.4f });
+	CreatePlatform("HighStep02", { 21.8f, 3.85f, 1.8f }, { 2.6f, 0.5f, 2.6f });
+	CreatePlatform("SkyRunway", { 25.3f, 4.45f, 1.8f }, { 4.0f, 0.5f, 1.2f });
+	CreatePlatform("LastJump", { 27.6f, 4.85f, -1.4f }, { 2.2f, 0.5f, 2.2f });
+	CreatePlatform("FinishPlatform", { 29.5f, 5.10f, 0.0f }, { 4.5f, 0.5f, 4.0f });
 
 	GameObject* goal = mGameWorld.CreateGameObject("Goal", GoalTemplate);
 	goal->GetComponent<TransformComponent>()->position = mGoalPosition;
