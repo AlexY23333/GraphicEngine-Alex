@@ -1,0 +1,21 @@
+{
+  "Components": {
+    "TransformComponent": {
+      "Position": [ 0.0, 0.0, 0.0 ],
+      "Rotation": [ 0.0, 0.0, 0.0, 1.0 ],
+      "Scale": [ 1.0, 1.0, 1.0 ]
+    },
+    "MeshComponent": {
+      "Shape": {
+        "Type": "Cube",
+        "Size": 1.0
+      },
+      "Material": {
+        "Ambient": [ 0.25, 0.30, 0.28, 1.0 ],
+        "Diffuse": [ 0.45, 0.80, 0.55, 1.0 ],
+        "Specular": [ 0.20, 0.25, 0.22, 1.0 ],
+        "SpecularPower": 8.0
+      }
+    }
+  }
+}

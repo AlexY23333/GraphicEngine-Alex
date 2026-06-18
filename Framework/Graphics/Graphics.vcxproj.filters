@@ -75,9 +75,6 @@
     <ClInclude Include="Inc\StandardEffect.h">
       <Filter>Inc</Filter>
     </ClInclude>
-    <ClInclude Include="Inc\TextureCashe.h">
-      <Filter>Inc</Filter>
-    </ClInclude>
     <ClInclude Include="Inc\DirectionalLight.h">
       <Filter>Inc</Filter>
     </ClInclude>
@@ -183,9 +180,6 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\StandardEffect.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\TextureCashe.cpp">
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\ModelIO.cpp">

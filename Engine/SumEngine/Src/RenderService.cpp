@@ -30,7 +30,14 @@ void RenderService::Initialize()
 
 void RenderService::Terminate()
 {
+	mShadowEffect.Terminate();
 	mStandardEffect.Terminate();
+
+	for (Entry& entry : mRenderEntries)
+	{
+		entry.renderGroup.Terminate();
+	}
+	mRenderEntries.clear();
 }
 
 void RenderService::Update(float deltaTime)
@@ -115,7 +122,7 @@ void RenderService::Unregister(const RenderObjectComponent* renderObjectComponen
 		{
 			return entry.renderComponent == renderObjectComponent;
 		});
-	if (iter == mRenderEntries.end())
+	if (iter != mRenderEntries.end())
 	{
 		iter->renderGroup.Terminate();
 		mRenderEntries.erase(iter);

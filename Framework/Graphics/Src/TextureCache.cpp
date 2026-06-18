@@ -18,7 +18,7 @@ void TextureCache::StaticInitialize(const std::filesystem::path& root)
 
 void TextureCache::StaticTerminate()
 {
-
+	sInstance.reset();
 }
 
 TextureCache* TextureCache::Get()
