@@ -214,7 +214,8 @@ void ModelIO::LoadMaterial(std::filesystem::path filePath, Model& model)
 		fscanf_s(file, "%f %f %f %f\n", &m.diffuse.r, &m.diffuse.g, &m.diffuse.b, &m.diffuse.a);
 		fscanf_s(file, "%f %f %f %f\n", &m.emissive.r, &m.emissive.g, &m.emissive.b, &m.emissive.a);
 		fscanf_s(file, "%f %f %f %f\n", &m.specular.r, &m.specular.g, &m.specular.b, &m.specular.a);
-		fscanf_s(file, "Power: %f\n", &m.power);
+		char shininessLabel[128]{};
+		fscanf_s(file, "%s %f\n", shininessLabel, (uint32_t)sizeof(shininessLabel), &m.power);
 
 		TryReadTextureName(materialData.diffuseMapName);
 		TryReadTextureName(materialData.normalMapName);

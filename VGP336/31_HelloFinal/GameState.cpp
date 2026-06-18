@@ -9,7 +9,8 @@ using namespace SumEngine::Audio;
 
 namespace
 {
-	constexpr float PlayerRadius = 0.45f;
+	constexpr float PlayerCollisionRadius = 0.45f;
+	constexpr float PlayerGroundOffset = 0.0f;
 	constexpr float MoveSpeed = 8.0f;
 	constexpr float JumpSpeed = 9.5f;
 	constexpr float Gravity = -24.0f;
@@ -206,14 +207,14 @@ bool GameState::CheckPlatformLanding(const Vector3& previousPosition)
 	for (const Platform& platform : mPlatforms)
 	{
 		const float top = platform.center.y + platform.halfExtents.y;
-		const bool wasAbove = previousPosition.y - PlayerRadius >= top - GroundSnapTolerance;
-		const bool isAtOrBelowTop = playerPosition.y - PlayerRadius <= top + GroundSnapTolerance;
-		const bool insideX = Abs(playerPosition.x - platform.center.x) <= platform.halfExtents.x + PlayerRadius;
-		const bool insideZ = Abs(playerPosition.z - platform.center.z) <= platform.halfExtents.z + PlayerRadius;
+		const bool wasAbove = previousPosition.y - PlayerGroundOffset >= top - GroundSnapTolerance;
+		const bool isAtOrBelowTop = playerPosition.y - PlayerGroundOffset <= top + GroundSnapTolerance;
+		const bool insideX = Abs(playerPosition.x - platform.center.x) <= platform.halfExtents.x + PlayerCollisionRadius;
+		const bool insideZ = Abs(playerPosition.z - platform.center.z) <= platform.halfExtents.z + PlayerCollisionRadius;
 
 		if (wasAbove && isAtOrBelowTop && insideX && insideZ)
 		{
-			mPlayerTransform->position.y = top + PlayerRadius;
+			mPlayerTransform->position.y = top + PlayerGroundOffset;
 			return true;
 		}
 	}
@@ -227,13 +228,13 @@ bool GameState::HasPlatformSupport() const
 	for (const Platform& platform : mPlatforms)
 	{
 		const float top = platform.center.y + platform.halfExtents.y;
-		const bool closeToTop = Abs((playerPosition.y - PlayerRadius) - top) <= GroundSnapTolerance;
-		const bool insideX = Abs(playerPosition.x - platform.center.x) <= platform.halfExtents.x + PlayerRadius;
-		const bool insideZ = Abs(playerPosition.z - platform.center.z) <= platform.halfExtents.z + PlayerRadius;
+		const bool closeToTop = Abs((playerPosition.y - PlayerGroundOffset) - top) <= GroundSnapTolerance;
+		const bool insideX = Abs(playerPosition.x - platform.center.x) <= platform.halfExtents.x + PlayerCollisionRadius;
+		const bool insideZ = Abs(playerPosition.z - platform.center.z) <= platform.halfExtents.z + PlayerCollisionRadius;
 
 		if (closeToTop && insideX && insideZ)
 		{
-			mPlayerTransform->position.y = top + PlayerRadius;
+			mPlayerTransform->position.y = top + PlayerGroundOffset;
 			return true;
 		}
 	}

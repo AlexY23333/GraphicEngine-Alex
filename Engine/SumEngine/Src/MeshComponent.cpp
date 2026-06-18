@@ -7,6 +7,15 @@ void MeshComponent::Deserialize(const rapidjson::Value& value)
 {
 	RenderObjectComponent::Deserialize(value);
 
+	if (value.HasMember("ModelFile"))
+	{
+		const std::filesystem::path modelFile = value["ModelFile"].GetString();
+		mModelId = Graphics::ModelCache::Get()->LoadModel(modelFile);
+		mCachedModel = Graphics::ModelCache::Get()->GetModel(mModelId);
+		ASSERT(mCachedModel != nullptr, "MeshComponent: failed to load model %s", modelFile.u8string().c_str());
+		return;
+	}
+
 	ASSERT(value.HasMember("Shape") || !mModel.meshData.empty(), "MeshComponent: either needs shape data or has data already");
 	Graphics::Model::MeshData& meshData = value.HasMember("Shape") ? mModel.meshData.emplace_back() : mModel.meshData.back();
 	Graphics::Model::MaterialData& matData = value.HasMember("Shape") ? mModel.materialData.emplace_back() : mModel.materialData.back();
@@ -113,7 +122,12 @@ void MeshComponent::Deserialize(const rapidjson::Value& value)
 	}
 }
 
+Graphics::ModelId MeshComponent::GetModelId() const
+{
+	return mModelId;
+}
+
 const Graphics::Model& MeshComponent::GetModel() const
 {
-	return mModel;
+	return (mCachedModel != nullptr) ? *mCachedModel : mModel;
 }
