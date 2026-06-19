@@ -16,19 +16,24 @@ namespace
 	constexpr float Gravity = -24.0f;
 	constexpr float FallResetHeight = -10.0f;
 	constexpr float GoalRadius = 1.2f;
+	constexpr float CoinCollectRadius = 1.0f;
+	constexpr int CoinScoreValue = 100;
 	constexpr float GroundSnapTolerance = 0.25f;
 
 	const std::filesystem::path PlayerTemplate = L"../../Assets/Templates/platformer_player.json";
 	const std::filesystem::path PlatformTemplate = L"../../Assets/Templates/platformer_platform.json";
+	const std::filesystem::path CoinTemplate = L"../../Assets/Templates/platformer_coin.json";
 	const std::filesystem::path GoalTemplate = L"../../Assets/Templates/platformer_goal.json";
 	const std::filesystem::path CameraTemplate = L"../../Assets/Templates/fps_camera.json";
 }
 
 void GameState::Initialize()
 {
+	GraphicsSystem::Get()->SetClearColor({ 0.45f, 0.68f, 0.92f, 1.0f });
+
 	mGameWorld.AddService<CameraService>();
 	mGameWorld.AddService<RenderService>();
-	mGameWorld.Initialize(32);
+	mGameWorld.Initialize(48);
 
 	CreatePlatform("Start", { 0.0f, 0.0f, 0.0f }, { 6.0f, 0.5f, 5.0f });
 	CreatePlatform("WarmupStep", { 4.7f, 0.8f, 1.8f }, { 2.8f, 0.5f, 2.8f });
@@ -42,6 +47,17 @@ void GameState::Initialize()
 	CreatePlatform("LastJump", { 27.6f, 4.85f, -1.4f }, { 2.2f, 0.5f, 2.2f });
 	CreatePlatform("FinishPlatform", { 29.5f, 5.10f, 0.0f }, { 4.5f, 0.5f, 4.0f });
 
+	CreateCoin("CoinStart", { 1.4f, 0.95f, 1.0f });
+	CreateCoin("CoinWarmup", { 4.7f, 1.75f, 1.8f });
+	CreateCoin("CoinLeftFork", { 8.0f, 2.40f, -1.5f });
+	CreateCoin("CoinRightFork", { 8.3f, 2.50f, 2.7f });
+	CreateCoin("CoinBridge", { 11.8f, 2.95f, 0.4f });
+	CreateCoin("CoinLanding", { 15.4f, 3.50f, 0.4f });
+	CreateCoin("CoinHigh01", { 18.5f, 4.20f, -2.0f });
+	CreateCoin("CoinHigh02", { 21.8f, 4.80f, 1.8f });
+	CreateCoin("CoinRunway", { 25.3f, 5.40f, 1.8f });
+	CreateCoin("CoinFinish", { 29.5f, 6.05f, 0.0f });
+
 	GameObject* goal = mGameWorld.CreateGameObject("Goal", GoalTemplate);
 	goal->GetComponent<TransformComponent>()->position = mGoalPosition;
 	goal->Initialize();
@@ -49,7 +65,7 @@ void GameState::Initialize()
 	mPlayer = mGameWorld.CreateGameObject("Player", PlayerTemplate);
 	mPlayerTransform = mPlayer->GetComponent<TransformComponent>();
 	mPlayer->Initialize();
-	ResetPlayer();
+	ResetPlayer(true);
 
 	GameObject* cameraGO = mGameWorld.CreateGameObject("Camera", CameraTemplate);
 	mCameraComponent = cameraGO->GetComponent<CameraComponent>();
@@ -65,6 +81,7 @@ void GameState::Terminate()
 void GameState::Update(float deltaTime)
 {
 	UpdatePlayer(deltaTime);
+	UpdateCoins();
 	UpdateCamera();
 	mGameWorld.Update(deltaTime);
 }
@@ -76,10 +93,30 @@ void GameState::Render()
 
 void GameState::DebugUI()
 {
+	ImGui::SetNextWindowPos({ 20.0f, 20.0f }, ImGuiCond_Always);
+	ImGui::SetNextWindowBgAlpha(0.75f);
+	ImGui::Begin("HUD", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoSavedSettings);
+	ImGui::Text("Score: %d", mScore);
+	ImGui::Text("Coins: %d / %d", GetCollectedCoinCount(), static_cast<int>(mCoins.size()));
+	ImGui::Text("Coin Count: %d", GetCollectedCoinCount());
+	if (mHasWon)
+	{
+		ImGui::Text("Goal reached!");
+	}
+	ImGui::End();
+
 	ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("31_HelloFinal");
 	ImGui::Text("Move: WASD");
 	ImGui::Text("Jump: Space");
+	ImGui::Separator();
+	ImGui::Text("Score: %d", mScore);
+	ImGui::Text("Coins: %d / %d", GetCollectedCoinCount(), static_cast<int>(mCoins.size()));
 	ImGui::Separator();
 	ImGui::Text("Player Position: %.2f, %.2f, %.2f",
 		mPlayerTransform->position.x,
@@ -93,7 +130,7 @@ void GameState::DebugUI()
 	ImGui::Text("Goal: %s", mHasWon ? "Reached" : "Find the gold cube");
 	if (ImGui::Button("Reset"))
 	{
-		ResetPlayer();
+		ResetPlayer(true);
 	}
 	ImGui::Separator();
 	mGameWorld.DebugUI();
@@ -113,12 +150,38 @@ void GameState::CreatePlatform(const char* name, const Vector3& center, const Ve
 	platformData.halfExtents = scale * 0.5f;
 }
 
-void GameState::ResetPlayer()
+void GameState::CreateCoin(const char* name, const Vector3& position)
+{
+	GameObject* coinObject = mGameWorld.CreateGameObject(name, CoinTemplate);
+	TransformComponent* transform = coinObject->GetComponent<TransformComponent>();
+	transform->position = position;
+	coinObject->Initialize();
+
+	Coin& coin = mCoins.emplace_back();
+	coin.position = position;
+	coin.transform = transform;
+}
+
+void GameState::ResetPlayer(bool resetCoins)
 {
 	mPlayerTransform->position = mSpawnPosition;
 	mPlayerVelocity = Vector3::Zero;
 	mIsGrounded = false;
 	mHasWon = false;
+
+	if (resetCoins)
+	{
+		mScore = 0;
+
+		for (Coin& coin : mCoins)
+		{
+			coin.collected = false;
+			if (coin.transform != nullptr)
+			{
+				coin.transform->position = coin.position;
+			}
+		}
+	}
 }
 
 void GameState::UpdatePlayer(float deltaTime)
@@ -184,12 +247,30 @@ void GameState::UpdatePlayer(float deltaTime)
 
 	if (mPlayerTransform->position.y < FallResetHeight)
 	{
-		ResetPlayer();
+		ResetPlayer(false);
 	}
 
 	if (Distance(mPlayerTransform->position, mGoalPosition) <= GoalRadius)
 	{
 		mHasWon = true;
+	}
+}
+
+void GameState::UpdateCoins()
+{
+	for (Coin& coin : mCoins)
+	{
+		if (coin.collected)
+		{
+			continue;
+		}
+
+		if (Distance(mPlayerTransform->position, coin.position) <= CoinCollectRadius)
+		{
+			coin.collected = true;
+			mScore += CoinScoreValue;
+			coin.transform->position = { coin.position.x, -100.0f, coin.position.z };
+		}
 	}
 }
 
@@ -226,6 +307,19 @@ bool GameState::CheckPlatformLanding(const Vector3& previousPosition)
 	}
 
 	return false;
+}
+
+int GameState::GetCollectedCoinCount() const
+{
+	int count = 0;
+	for (const Coin& coin : mCoins)
+	{
+		if (coin.collected)
+		{
+			++count;
+		}
+	}
+	return count;
 }
 
 bool GameState::HasPlatformSupport() const
